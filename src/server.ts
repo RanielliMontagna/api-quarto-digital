@@ -6,4 +6,5 @@ const app = express();
 app.use(express.json());
 app.use(routes);
 
-app.listen(4003, () => console.log("Server está rodando na porta 4003!"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server está rodando na porta 3000!"));
