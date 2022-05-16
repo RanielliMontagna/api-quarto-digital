@@ -5,7 +5,8 @@
   "author": "Ranielli Montagna",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --exit-child --respawn --transpile-only --ignore-watch node_modules src/server.ts"
+    "dev": "ts-node-dev --exit-child --respawn --transpile-only --ignore-watch node_modules src/server.ts",
+    "start": "ts-node-dev --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
     "@prisma/client": "^3.14.0",
