@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "ts-node-dev --exit-child --respawn --transpile-only --ignore-watch node_modules src/server.ts",
     "build": "prisma generate",
-    "start": "node src/server.ts"
+    "start": "ts-node src/server.ts"
   },
   "dependencies": {
     "@prisma/client": "^3.14.0",
