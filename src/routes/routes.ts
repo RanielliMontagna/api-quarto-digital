@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { produtosRouter } from "./produtos.routes";
 import { servicosRouter } from "./servicos.routes";
 

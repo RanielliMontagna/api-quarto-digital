@@ -1,8 +1,9 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
+import { Servico } from "@prisma/client";
 
 export class CriarServicoController {
-  async handle(request: Request, response: Response) {
+  async handle(request: Request<Servico>, response: Response) {
     const { nome, preco } = request.body;
 
     const servico = await prismaClient.servico.create({
