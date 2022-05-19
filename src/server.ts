@@ -29,10 +29,16 @@ app.use(Sentry.Handlers.errorHandler());
 
 // Middleware para tratar erros
 const _errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  if (process.env.NODE_ENV === "development") {
-    res.status(500).json(res);
+  if (process.env.NODE_ENV !== "development") {
+    res.status(500).json({ erro: err.message } ?? res);
   } else {
-    res.status(500).json("Ocorreu um erro ao processar a requisição");
+    res
+      .status(500)
+      .json(
+        err.message
+          ? { erro: err.message }
+          : { erro: "Ocorreu um erro ao processar a requisição" }
+      );
   }
 };
 app.use(_errorHandler);
