@@ -4,7 +4,7 @@ interface IsNumber {
 }
 
 const isNumber = ({ value, nome }: IsNumber) => {
-  if (Number.isNaN(value)) {
+  if (Number.isNaN(Number(value))) {
     if (nome) {
       throw new Error(`O ${nome} deve ser um número`);
     } else {

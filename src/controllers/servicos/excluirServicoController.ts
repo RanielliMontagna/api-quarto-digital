@@ -12,14 +12,20 @@ export class ExcluirServicoController {
     isInteger({ value: id, nome: "código" });
 
     // Exclui o serviço no banco de dados
-    const servico = await prismaClient.servico.delete({
-      where: {
-        id: Number(id),
-      },
-    });
-
-    //Retorna erro caso o serviço não seja excluído
-    if (!servico) throw new Error("Ocorreu um erro ao excluir o serviço");
+    await prismaClient.servico
+      .delete({
+        where: {
+          id: Number(id),
+        },
+      })
+      .catch((error) => {
+        //Retorna erro caso o serviço não seja excluído
+        if (error?.meta.cause === "Record to delete does not exist.") {
+          throw new Error("Serviço não encontrado.");
+        } else {
+          throw new Error("Ocorreu um erro ao excluir o serviço.");
+        }
+      });
 
     return response.status(200).json();
   }

@@ -12,11 +12,16 @@ export class BuscarProdutoController {
     isInteger({ value: id, nome: "código" });
 
     // Busca o produto no banco de dados
-    const produto = await prismaClient.produto.findFirst({
-      where: {
-        id: Number(id),
-      },
-    });
+    const produto = await prismaClient.produto
+      .findFirst({
+        where: {
+          id: Number(id),
+        },
+      })
+      .catch(() => {
+        //Retorna erro caso de algum problema na busca
+        throw new Error("Ocorreu um erro ao buscar o produto.");
+      });
 
     // Erro caso o produto não seja encontrado
     campoNaoEncontrado({ value: produto, nome: "produto" });

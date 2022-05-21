@@ -12,14 +12,20 @@ export class ExcluirProdutoController {
     isInteger({ value: id, nome: "código" });
 
     // Exclui o produto no banco de dados
-    const produto = await prismaClient.produto.delete({
-      where: {
-        id: Number(id),
-      },
-    });
-
-    //Retorna erro caso o produto não seja excluído
-    if (!produto) throw new Error("Ocorreu um erro ao excluir o produto");
+    await prismaClient.produto
+      .delete({
+        where: {
+          id: Number(id),
+        },
+      })
+      .catch((error) => {
+        //Retorna erro caso o produto não seja excluído
+        if (error?.meta.cause === "Record to delete does not exist.") {
+          throw new Error("Produto não encontrado.");
+        } else {
+          throw new Error("Ocorreu um erro ao excluir o produto.");
+        }
+      });
 
     return response.status(200).json();
   }

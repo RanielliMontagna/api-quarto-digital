@@ -12,11 +12,16 @@ export class BuscarServicoController {
     isInteger({ value: id, nome: "código" });
 
     // Busca o serviço no banco de dados
-    const servico = await prismaClient.servico.findFirst({
-      where: {
-        id: Number(id),
-      },
-    });
+    const servico = await prismaClient.servico
+      .findFirst({
+        where: {
+          id: Number(id),
+        },
+      })
+      .catch(() => {
+        //Retorna erro caso de algum problema na busca
+        throw new Error("Ocorreu um erro ao buscar o servico.");
+      });
 
     // Erro caso o serviço não seja encontrado
     campoNaoEncontrado({ value: servico, nome: "serviço" });
