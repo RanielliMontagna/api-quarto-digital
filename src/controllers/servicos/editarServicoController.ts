@@ -41,6 +41,7 @@ export class EditarServicoController {
         data: {
           nome,
           preco,
+          alteradoEm: new Date(),
         },
         where: {
           id,
