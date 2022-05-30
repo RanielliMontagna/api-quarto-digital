@@ -1,18 +1,18 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
-import { Servico } from "@prisma/client";
+import { Usuario } from "@prisma/client";
 
 import { campoNaoEncontrado, isInteger } from "../../utils/validations";
 
-export class BuscarServicoController {
-  async handle(request: Request<Servico>, response: Response) {
+export class BuscarUsuarioController {
+  async handle(request: Request<Usuario>, response: Response) {
     const { id } = request.params;
 
     // Verifica se o id é um número inteiro
     isInteger({ value: id, nome: "código" });
 
-    // Busca o serviço no banco de dados
-    const servico = await prismaClient.servico
+    // Busca o usuário no banco de dados
+    const usuario = await prismaClient.usuario
       .findFirst({
         where: {
           id: Number(id),
@@ -20,12 +20,12 @@ export class BuscarServicoController {
       })
       .catch(() => {
         //Retorna erro caso de algum problema na busca
-        throw new Error("Ocorreu um erro ao buscar o serviço.");
+        throw new Error("Ocorreu um erro ao buscar o usuário.");
       });
 
-    // Erro caso o serviço não seja encontrado
-    campoNaoEncontrado({ value: servico, nome: "serviço" });
+    // Erro caso o usuário não seja encontrado
+    campoNaoEncontrado({ value: usuario, nome: "usuário" });
 
-    return response.json(servico);
+    return response.json(usuario);
   }
 }

@@ -29,3 +29,23 @@ model Servico {
 
   @@map("servicos")
 }
+
+model Usuario {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  email      String
+  senha      String
+  criadoEm   DateTime @default(now())
+  alteradoEm DateTime @default(now())
+
+  @@map("usuarios")
+}
+
+model Token {
+  token        String   @id
+  usuarioId    Int
+  criadoEm     DateTime @default(now())
+  dataExclusao DateTime
+
+  @@map("tokens")
+}
