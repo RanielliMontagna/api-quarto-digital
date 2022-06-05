@@ -18,7 +18,17 @@ export const SentryMiddleware = (app: Express) => {
   }
 
   // Middleware para erros do sentry
-  app.use(Sentry.Handlers.errorHandler());
+  app.use(
+    Sentry.Handlers.errorHandler({
+      shouldHandleError(error) {
+        // Caso o erro seja um erro de validação, não envia para o sentry
+        if (error.name === "ValidationError") {
+          return false;
+        }
+        return true;
+      },
+    })
+  );
 
   // Middleware para tratar erros
   const _errorHandler: ErrorRequestHandler = (err, req, res, next) => {

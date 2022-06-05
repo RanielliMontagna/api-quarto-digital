@@ -1,3 +1,5 @@
+import { ValidationError } from "../errors/validationError";
+
 interface ResultadoNaoEncontrado {
   value: any;
   nome?: string;
@@ -6,9 +8,9 @@ interface ResultadoNaoEncontrado {
 const campoNaoEncontrado = ({ value, nome }: ResultadoNaoEncontrado) => {
   if (!value) {
     if (nome) {
-      throw new Error(`Nenhum ${nome} encontrado`);
+      throw new ValidationError(`Nenhum ${nome} encontrado`);
     } else {
-      throw new Error("Nenhum resultado encontrado");
+      throw new ValidationError("Nenhum resultado encontrado");
     }
   }
 };

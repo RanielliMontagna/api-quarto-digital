@@ -9,6 +9,7 @@ import {
   max99999,
   min0,
 } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class EditarServicoController {
   async handle(request: Request<Servico>, response: Response) {
@@ -50,7 +51,7 @@ export class EditarServicoController {
       .catch((error) => {
         //Retorna erro caso o serviço não seja editado
         if (error?.meta.cause === "Record to update not found.") {
-          throw new Error("Serviço não encontrado.");
+          throw new ValidationError("Serviço não encontrado.");
         } else {
           throw new Error("Erro ao editar serviço.");
         }

@@ -9,6 +9,7 @@ import {
   emailValido,
   isString,
 } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class RegisterController {
   async handle(request: Request, response: Response) {
@@ -47,11 +48,11 @@ export class RegisterController {
       })
       .catch(() => {
         //Retorna erro caso o usuário não seja encontrado
-        throw new Error("Ocorreu um erro ao encontrar o usuário.");
+        throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
       });
 
     if (usuario) {
-      throw new Error("Usuário já existe.");
+      throw new ValidationError("Usuário já existe.");
     } else {
       // Cria o usuário
       const usuarioCriado = await prismaClient.usuario.create({
@@ -73,7 +74,7 @@ export class RegisterController {
           }
         );
       } else {
-        throw new Error("JWT_SECRET não definido.");
+        throw new ValidationError("JWT_SECRET não definido.");
       }
 
       // Guarda o token no banco de dados

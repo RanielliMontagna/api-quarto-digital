@@ -3,6 +3,7 @@ import { Servico } from "@prisma/client";
 import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class ExcluirServicoController {
   async handle(request: Request<Servico>, response: Response) {
@@ -21,7 +22,7 @@ export class ExcluirServicoController {
       .catch((error) => {
         //Retorna erro caso o serviço não seja excluído
         if (error?.meta.cause === "Record to delete does not exist.") {
-          throw new Error("Serviço não encontrado.");
+          throw new ValidationError("Serviço não encontrado.");
         } else {
           throw new Error("Ocorreu um erro ao excluir o serviço.");
         }

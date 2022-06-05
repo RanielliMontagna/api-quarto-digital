@@ -3,6 +3,7 @@ import { Produto } from "@prisma/client";
 import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class ExcluirProdutoController {
   async handle(request: Request<Produto>, response: Response) {
@@ -21,7 +22,7 @@ export class ExcluirProdutoController {
       .catch((error) => {
         //Retorna erro caso o produto não seja excluído
         if (error?.meta.cause === "Record to delete does not exist.") {
-          throw new Error("Produto não encontrado.");
+          throw new ValidationError("Produto não encontrado.");
         } else {
           throw new Error("Ocorreu um erro ao excluir o produto.");
         }

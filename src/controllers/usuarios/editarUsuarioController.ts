@@ -8,6 +8,7 @@ import {
   isNumber,
   isString,
 } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class EditarUsuarioController {
   async handle(request: Request<Usuario>, response: Response) {
@@ -57,7 +58,7 @@ export class EditarUsuarioController {
       .catch((error) => {
         //Retorna erro caso o usuário não seja editado
         if (error?.meta.cause === "Record to update not found.") {
-          throw new Error("Usuário não encontrado.");
+          throw new ValidationError("Usuário não encontrado.");
         } else {
           throw new Error("Erro ao editar usuário.");
         }

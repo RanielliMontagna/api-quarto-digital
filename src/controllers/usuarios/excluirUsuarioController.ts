@@ -3,6 +3,7 @@ import { Usuario } from "@prisma/client";
 import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class ExcluirUsuarioController {
   async handle(request: Request<Usuario>, response: Response) {
@@ -28,7 +29,7 @@ export class ExcluirUsuarioController {
       .catch((error) => {
         //Retorna erro caso o produto não seja excluído
         if (error?.meta.cause === "Record to delete does not exist.") {
-          throw new Error("Usuário não encontrado.");
+          throw new ValidationError("Usuário não encontrado.");
         } else {
           throw new Error("Ocorreu um erro ao excluir o usuário.");
         }

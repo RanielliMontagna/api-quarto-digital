@@ -8,6 +8,7 @@ import {
   composeValidator,
   isString,
 } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class LoginController {
   async handle(request: Request, response: Response) {
@@ -27,9 +28,6 @@ export class LoginController {
       nome: "senha",
     });
 
-    // Criptografa a senha
-    const senhaCriptografada = await bcrypt.hash(senha, 10);
-
     // Verifica se o usuário existe no banco de dados
     const usuario = await prismaClient.usuario
       .findFirst({
@@ -39,7 +37,7 @@ export class LoginController {
       })
       .catch(() => {
         //Retorna erro caso o usuário não seja encontrado
-        throw new Error("Ocorreu um erro ao encontrar o usuário.");
+        throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
       });
 
     // Verifica se a senha está correta
@@ -47,7 +45,7 @@ export class LoginController {
 
     // Retorna erro caso a senha esteja incorreta
     if (!senhaCorreta) {
-      throw new Error("Senha incorreta.");
+      throw new ValidationError("Senha incorreta.");
     }
 
     let token;
@@ -61,7 +59,7 @@ export class LoginController {
         }
       );
     } else {
-      throw new Error("JWT_SECRET não definido.");
+      throw new ValidationError("JWT_SECRET não definido.");
     }
 
     if (usuario) {

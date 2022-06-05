@@ -9,6 +9,7 @@ import {
   max99999,
   min0,
 } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class EditarProdutoController {
   async handle(request: Request<Produto>, response: Response) {
@@ -50,7 +51,7 @@ export class EditarProdutoController {
       .catch((error) => {
         //Retorna erro caso o produto não seja editado
         if (error?.meta.cause === "Record to update not found.") {
-          throw new Error("Produto não encontrado.");
+          throw new ValidationError("Produto não encontrado.");
         } else {
           throw new Error("Erro ao editar produto.");
         }

@@ -1,3 +1,5 @@
+import { ValidationError } from "../errors/validationError";
+
 interface IsNumber {
   value: any;
   nome?: string;
@@ -6,9 +8,9 @@ interface IsNumber {
 const isNumber = ({ value, nome }: IsNumber) => {
   if (Number.isNaN(Number(value))) {
     if (nome) {
-      throw new Error(`O ${nome} deve ser um número`);
+      throw new ValidationError(`O ${nome} deve ser um número`);
     } else {
-      throw new Error("O valor informado não é um número");
+      throw new ValidationError("O valor informado não é um número");
     }
   }
 };

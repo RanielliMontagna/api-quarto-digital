@@ -18,7 +18,7 @@ export class BuscarUsuarioController {
           id: Number(id),
         },
       })
-      .catch(() => {
+      .catch((err) => {
         //Retorna erro caso de algum problema na busca
         throw new Error("Ocorreu um erro ao buscar o usuário.");
       });

@@ -10,6 +10,7 @@ import {
   emailValido,
   isString,
 } from "../../utils/validations";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class CriarUsuarioController {
   async handle(request: Request<Usuario>, response: Response) {
@@ -48,11 +49,11 @@ export class CriarUsuarioController {
       })
       .catch(() => {
         //Retorna erro caso o usuário não seja encontrado
-        throw new Error("Ocorreu um erro ao encontrar o usuário.");
+        throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
       });
 
     if (usuarioExistente) {
-      throw new Error("Usuário já existe.");
+      throw new ValidationError("Usuário já existe.");
     } else {
       // Cria o usuário no banco de dados
       const usuario = await prismaClient.usuario
