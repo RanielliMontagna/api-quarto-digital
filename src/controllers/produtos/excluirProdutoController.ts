@@ -6,7 +6,7 @@ import { isInteger } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
 
 export class ExcluirProdutoController {
-  async handle(request: Request<Produto>, response: Response) {
+  async handle(request: Request, response: Response) {
     const { id } = request.params;
 
     // Verifica se o id é um número inteiro

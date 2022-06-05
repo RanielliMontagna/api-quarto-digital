@@ -70,7 +70,7 @@ export class RegisterController {
           { id: usuarioCriado.id, nome: usuarioCriado.nome },
           process.env.JWT_SECRET,
           {
-            expiresIn: "1d",
+            expiresIn: "7d",
           }
         );
       } else {

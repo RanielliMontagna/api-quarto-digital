@@ -12,7 +12,7 @@ import {
 import { ValidationError } from "../../utils/errors/validationError";
 
 export class EditarProdutoController {
-  async handle(request: Request<Produto>, response: Response) {
+  async handle(request: Request, response: Response) {
     const { id, nome, preco } = request.body;
 
     // Validações no campo id

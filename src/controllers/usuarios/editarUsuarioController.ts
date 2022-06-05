@@ -11,7 +11,7 @@ import {
 import { ValidationError } from "../../utils/errors/validationError";
 
 export class EditarUsuarioController {
-  async handle(request: Request<Usuario>, response: Response) {
+  async handle(request: Request, response: Response) {
     const { id, email, nome, senha } = request.body;
 
     // Validações no campo id

@@ -12,7 +12,7 @@ import {
 } from "../../utils/validations";
 
 export class CriarServicoController {
-  async handle(request: Request<Servico>, response: Response) {
+  async handle(request: Request, response: Response) {
     const { nome, preco } = request.body;
 
     // Validações no campo nome

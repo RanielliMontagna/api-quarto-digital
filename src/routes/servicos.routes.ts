@@ -5,6 +5,7 @@ import { CriarServicoController } from "../controllers/servicos/criarServicoCont
 import { EditarServicoController } from "../controllers/servicos/editarServicoController";
 import { ExcluirServicoController } from "../controllers/servicos/excluirServicoController";
 import { ListarServicosController } from "../controllers/servicos/listarServicosController";
+import { JwtMiddleware } from "../middlewares/jwt";
 
 const servicosRouter = Router();
 
@@ -14,10 +15,10 @@ const listarServico = new ListarServicosController();
 const excluirServico = new ExcluirServicoController();
 const editarServico = new EditarServicoController();
 
-servicosRouter.get("/", listarServico.handle);
-servicosRouter.get("/:id", buscarServico.handle);
-servicosRouter.post("/", criarServico.handle);
-servicosRouter.delete("/:id", excluirServico.handle);
-servicosRouter.put("/", editarServico.handle);
+servicosRouter.get("/", JwtMiddleware, listarServico.handle);
+servicosRouter.get("/:id", JwtMiddleware, buscarServico.handle);
+servicosRouter.post("/", JwtMiddleware, criarServico.handle);
+servicosRouter.delete("/:id", JwtMiddleware, excluirServico.handle);
+servicosRouter.put("/", JwtMiddleware, editarServico.handle);
 
 export { servicosRouter };

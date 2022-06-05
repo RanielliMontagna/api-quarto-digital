@@ -3,6 +3,7 @@ import "express-async-errors";
 
 import { routes } from "./routes/routes";
 import { SentryMiddleware } from "./middlewares/sentry";
+import { JwtMiddleware } from "./middlewares/jwt";
 
 const app = express();
 

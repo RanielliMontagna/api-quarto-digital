@@ -5,7 +5,7 @@ import { Usuario } from "@prisma/client";
 import { campoNaoEncontrado, isInteger } from "../../utils/validations";
 
 export class BuscarUsuarioController {
-  async handle(request: Request<Usuario>, response: Response) {
+  async handle(request: Request, response: Response) {
     const { id } = request.params;
 
     // Verifica se o id é um número inteiro

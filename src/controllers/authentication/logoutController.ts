@@ -1,18 +1,23 @@
 import { Request, Response } from "express";
 import { prismaClient } from "../../database/prismaClient";
-import { isInteger } from "../../utils/validations";
+import jwt from "jsonwebtoken";
+import { IToken } from "../../middlewares/jwt";
 
 export class LogoutController {
   async handle(request: Request, response: Response) {
-    const { id } = request.params;
+    let token = request.headers["authorization"];
 
-    // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    if (token!.startsWith("Bearer ")) {
+      token = token?.slice(7, token.length);
+    }
+
+    //Fazer decoded do token
+    const decoded = jwt.decode(token!) as IToken;
 
     // Exclui tokens existentes do usuário
     await prismaClient.token.deleteMany({
       where: {
-        usuario: { id: Number(id) },
+        usuario: { id: Number(decoded.id) },
       },
     });
 

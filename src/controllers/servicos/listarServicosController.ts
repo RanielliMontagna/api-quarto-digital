@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Servico } from "@prisma/client";
 
 export class ListarServicosController {
-  async handle(_: Request<Servico>, response: Response) {
+  async handle(_: Request, response: Response) {
     const servico = await prismaClient.servico.findMany().catch(() => {
       //Retornar erro caso os serviços não sejam listados
       throw new Error("Ocorreu um erro ao listar os serviços");

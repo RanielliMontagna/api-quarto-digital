@@ -5,6 +5,7 @@ import { CriarProdutoController } from "../controllers/produtos/criarProdutoCont
 import { EditarProdutoController } from "../controllers/produtos/editarProdutoController";
 import { ExcluirProdutoController } from "../controllers/produtos/excluirProdutoController";
 import { ListarProdutosController } from "../controllers/produtos/listarProdutosController";
+import { JwtMiddleware } from "../middlewares/jwt";
 
 const produtosRouter = Router();
 
@@ -14,10 +15,10 @@ const listarProduto = new ListarProdutosController();
 const excluirProduto = new ExcluirProdutoController();
 const editarProduto = new EditarProdutoController();
 
-produtosRouter.get("/", listarProduto.handle);
-produtosRouter.get("/:id", buscarProduto.handle);
-produtosRouter.post("/", criarProduto.handle);
-produtosRouter.delete("/:id", excluirProduto.handle);
-produtosRouter.put("/", editarProduto.handle);
+produtosRouter.get("/", JwtMiddleware, listarProduto.handle);
+produtosRouter.get("/:id", JwtMiddleware, buscarProduto.handle);
+produtosRouter.post("/", JwtMiddleware, criarProduto.handle);
+produtosRouter.delete("/:id", JwtMiddleware, excluirProduto.handle);
+produtosRouter.put("/", JwtMiddleware, editarProduto.handle);
 
 export { produtosRouter };
