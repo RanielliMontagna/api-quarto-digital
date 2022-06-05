@@ -38,14 +38,16 @@ model Usuario {
   criadoEm   DateTime @default(now())
   alteradoEm DateTime @default(now())
 
+  Token Token[]
   @@map("usuarios")
 }
 
 model Token {
-  token        String   @id
-  usuarioId    Int
-  criadoEm     DateTime @default(now())
-  dataExclusao DateTime
+  token        String    @id
+  usuarioId    Int?
+  criadoEm     DateTime  @default(now())
+  dataExclusao DateTime?
+  usuario      Usuario?  @relation(fields: [usuarioId], references: [id])
 
   @@map("tokens")
 }

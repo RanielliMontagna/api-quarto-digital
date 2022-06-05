@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 import { prismaClient } from "../../database/prismaClient";
-import { Usuario } from "@prisma/client";
 
 import {
   campoObrigatorio,
@@ -11,8 +10,8 @@ import {
   isString,
 } from "../../utils/validations";
 
-export class CriarUsuarioController {
-  async handle(request: Request<Usuario>, response: Response) {
+export class RegisterController {
+  async handle(request: Request, response: Response) {
     const { email, nome, senha } = request.body;
 
     // Validações no campo email
@@ -40,7 +39,7 @@ export class CriarUsuarioController {
     const senhaCriptografada = await bcrypt.hash(senha, 10);
 
     // Verifica se o usuário existe no banco de dados
-    const usuarioExistente = await prismaClient.usuario
+    const usuario = await prismaClient.usuario
       .findFirst({
         where: {
           email,
@@ -51,24 +50,42 @@ export class CriarUsuarioController {
         throw new Error("Ocorreu um erro ao encontrar o usuário.");
       });
 
-    if (usuarioExistente) {
+    if (usuario) {
       throw new Error("Usuário já existe.");
     } else {
-      // Cria o usuário no banco de dados
-      const usuario = await prismaClient.usuario
-        .create({
-          data: {
-            email: email.toLowerCase(),
-            nome,
-            senha: senhaCriptografada,
-          },
-        })
-        .catch(() => {
-          //Retorna erro caso o usuário não seja criado
-          throw new Error("Ocorreu um erro ao criar o usuário.");
-        });
+      // Cria o usuário
+      const usuarioCriado = await prismaClient.usuario.create({
+        data: {
+          nome,
+          email: email.toLowerCase(),
+          senha: senhaCriptografada,
+        },
+      });
 
-      return response.json(usuario);
+      // Cria o token de autenticação
+      let token;
+      if (process.env.JWT_SECRET) {
+        token = jwt.sign(
+          { id: usuarioCriado.id, nome: usuarioCriado.nome },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "1d",
+          }
+        );
+      } else {
+        throw new Error("JWT_SECRET não definido.");
+      }
+
+      // Guarda o token no banco de dados
+      await prismaClient.token.create({
+        data: {
+          token,
+          usuarioId: usuarioCriado.id,
+        },
+      });
+
+      // Retorna o token
+      return response.json({ token });
     }
   }
 }

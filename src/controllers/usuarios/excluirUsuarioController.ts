@@ -11,6 +11,13 @@ export class ExcluirUsuarioController {
     // Verifica se o id é um número inteiro
     isInteger({ value: id, nome: "código" });
 
+    // Exclui tokens existentes do usuário
+    await prismaClient.token.deleteMany({
+      where: {
+        usuario: { id: Number(id) },
+      },
+    });
+
     // Exclui o produto no banco de dados
     await prismaClient.usuario
       .delete({

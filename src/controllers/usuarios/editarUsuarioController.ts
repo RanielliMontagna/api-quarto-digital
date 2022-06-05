@@ -4,6 +4,7 @@ import { Usuario } from "@prisma/client";
 import {
   campoObrigatorio,
   composeValidator,
+  emailValido,
   isNumber,
   isString,
 } from "../../utils/validations";
@@ -21,7 +22,7 @@ export class EditarUsuarioController {
 
     // Validações no campo email
     composeValidator({
-      validators: [campoObrigatorio, isString],
+      validators: [campoObrigatorio, isString, emailValido],
       value: email,
       nome: "email",
     });
@@ -44,7 +45,7 @@ export class EditarUsuarioController {
     const usuario = await prismaClient?.usuario
       ?.update({
         data: {
-          email,
+          email: email.toLowerCase(),
           nome,
           senha,
           alteradoEm: new Date(),
