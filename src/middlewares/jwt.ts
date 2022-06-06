@@ -26,18 +26,13 @@ export const JwtMiddleware = (
     const tokenWithoutBearer = token.slice(7, token.length);
 
     // Verifica o token
-    jwt.verify(tokenWithoutBearer, secret, async (err, decoded) => {
+    jwt.verify(tokenWithoutBearer, secret, async (err) => {
       if (err?.message === "jwt expired") {
         return res.status(401).json({ erro: "Token expirado" });
       }
 
       if (err) {
         return res.status(401).json({ erro: "Token inválido" });
-      }
-
-      const tokenDecoded = decoded as IToken;
-      if (!tokenDecoded.exp) {
-        return res.status(401).json({ erro: "Token expirado" });
       }
 
       // Verifica se o token existe no banco de dados

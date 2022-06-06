@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
 import { prismaClient } from "../../database/prismaClient";
-import { Usuario } from "@prisma/client";
-
 import {
   campoObrigatorio,
   composeValidator,

@@ -1,6 +1,5 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
-import { Servico } from "@prisma/client";
 
 export class ListarServicosController {
   async handle(_: Request, response: Response) {

@@ -1,6 +1,5 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
-import { Usuario } from "@prisma/client";
 
 export class ListarUsuariosController {
   async handle(_: Request, response: Response) {

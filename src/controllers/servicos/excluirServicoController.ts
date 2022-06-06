@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Servico } from "@prisma/client";
 import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";

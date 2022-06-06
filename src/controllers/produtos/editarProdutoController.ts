@@ -1,6 +1,5 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
-import { Produto } from "@prisma/client";
 import {
   campoObrigatorio,
   composeValidator,
