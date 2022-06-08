@@ -26,7 +26,7 @@ const editarServico = new EditarServicoController();
  *       200:
  *         description: Retorna os serviços cadastrados.
  */
-servicosRouter.get("/", JwtMiddleware, listarServico.handle);
+servicosRouter.get("/", listarServico.handle);
 
 /**
  * @openapi
@@ -39,7 +39,7 @@ servicosRouter.get("/", JwtMiddleware, listarServico.handle);
  *       200:
  *         description: Retorna o serviço cadastrado com o id especificado.
  */
-servicosRouter.get("/:id", JwtMiddleware, buscarServico.handle);
+servicosRouter.get("/:id", buscarServico.handle);
 
 /**
  * @openapi
@@ -52,7 +52,7 @@ servicosRouter.get("/:id", JwtMiddleware, buscarServico.handle);
  *       200:
  *         description: Retorna o serviço inserido.
  */
-servicosRouter.post("/", JwtMiddleware, criarServico.handle);
+servicosRouter.post("/", criarServico.handle);
 
 /**
  * @openapi
@@ -65,7 +65,7 @@ servicosRouter.post("/", JwtMiddleware, criarServico.handle);
  *       200:
  *         description: Retorna o serviço excluído.
  */
-servicosRouter.delete("/:id", JwtMiddleware, excluirServico.handle);
+servicosRouter.delete("/:id", excluirServico.handle);
 
 /**
  * @openapi
@@ -78,6 +78,6 @@ servicosRouter.delete("/:id", JwtMiddleware, excluirServico.handle);
  *       200:
  *         description: Retorna o serviço editado.
  */
-servicosRouter.put("/", JwtMiddleware, editarServico.handle);
+servicosRouter.put("/", editarServico.handle);
 
 export { servicosRouter };

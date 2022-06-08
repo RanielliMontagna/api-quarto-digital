@@ -26,7 +26,7 @@ const editarProduto = new EditarProdutoController();
  *       200:
  *         description: Retorna os produtos cadastrados.
  */
-produtosRouter.get("/", JwtMiddleware, listarProduto.handle);
+produtosRouter.get("/", listarProduto.handle);
 
 /**
  * @openapi
@@ -39,7 +39,7 @@ produtosRouter.get("/", JwtMiddleware, listarProduto.handle);
  *       200:
  *         description: Retorna o produto cadastrado com o id especificado.
  */
-produtosRouter.get("/:id", JwtMiddleware, buscarProduto.handle);
+produtosRouter.get("/:id", buscarProduto.handle);
 
 /**
  * @openapi
@@ -52,7 +52,7 @@ produtosRouter.get("/:id", JwtMiddleware, buscarProduto.handle);
  *       200:
  *         description: Retorna o produto inserido.
  */
-produtosRouter.post("/", JwtMiddleware, criarProduto.handle);
+produtosRouter.post("/", criarProduto.handle);
 
 /**
  * @openapi
@@ -65,7 +65,7 @@ produtosRouter.post("/", JwtMiddleware, criarProduto.handle);
  *       200:
  *         description: Retorna o produto excluído.
  */
-produtosRouter.delete("/:id", JwtMiddleware, excluirProduto.handle);
+produtosRouter.delete("/:id", excluirProduto.handle);
 
 /**
  * @openapi
@@ -78,6 +78,6 @@ produtosRouter.delete("/:id", JwtMiddleware, excluirProduto.handle);
  *       200:
  *         description: Retorna o produto editado.
  */
-produtosRouter.put("/", JwtMiddleware, editarProduto.handle);
+produtosRouter.put("/", editarProduto.handle);
 
 export { produtosRouter };

@@ -26,7 +26,7 @@ const editarUsuario = new EditarUsuarioController();
  *       200:
  *         description: Retorna a lista de usuários.
  */
-usuariosRouter.get("/", JwtMiddleware, listarUsuarios.handle);
+usuariosRouter.get("/", listarUsuarios.handle);
 
 /**
  * @openapi
@@ -39,7 +39,7 @@ usuariosRouter.get("/", JwtMiddleware, listarUsuarios.handle);
  *       200:
  *         description: Retorna o usuário.
  */
-usuariosRouter.get("/:id", JwtMiddleware, buscarUsuario.handle);
+usuariosRouter.get("/:id", buscarUsuario.handle);
 
 /**
  * @openapi
@@ -52,7 +52,7 @@ usuariosRouter.get("/:id", JwtMiddleware, buscarUsuario.handle);
  *       200:
  *         description: Retorna o usuário.
  */
-usuariosRouter.post("/", JwtMiddleware, criarUsuario.handle);
+usuariosRouter.post("/", criarUsuario.handle);
 
 /**
  * @openapi
@@ -65,7 +65,7 @@ usuariosRouter.post("/", JwtMiddleware, criarUsuario.handle);
  *       200:
  *         description: Retorna uma mensagem de sucesso.
  */
-usuariosRouter.delete("/:id", JwtMiddleware, excluirUsuario.handle);
+usuariosRouter.delete("/:id", excluirUsuario.handle);
 
 /**
  * @openapi
@@ -78,6 +78,6 @@ usuariosRouter.delete("/:id", JwtMiddleware, excluirUsuario.handle);
  *       200:
  *         description: Retorna o usuário editado.
  */
-usuariosRouter.put("/", JwtMiddleware, editarUsuario.handle);
+usuariosRouter.put("/", editarUsuario.handle);
 
 export { usuariosRouter };
