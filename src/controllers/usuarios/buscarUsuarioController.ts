@@ -2,6 +2,7 @@ import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 
 import { campoNaoEncontrado, isInteger } from "../../utils/validations";
+import useTokenDecoded from "../../utils/useTokenDecoded";
 
 export class BuscarUsuarioController {
   async handle(request: Request, response: Response) {

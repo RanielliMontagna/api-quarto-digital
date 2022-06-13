@@ -9,10 +9,12 @@ import {
   max999999,
   min0,
 } from "../../utils/validations";
+import useTokenDecoded from "../../utils/useTokenDecoded";
 
 export class CriarServicoController {
   async handle(request: Request, response: Response) {
     const { nome, preco } = request.body;
+    const { id } = useTokenDecoded(request);
 
     // Validações no campo nome
     composeValidator({
@@ -34,6 +36,7 @@ export class CriarServicoController {
         data: {
           nome,
           preco,
+          usuarioId: id,
         },
       })
       .catch(() => {

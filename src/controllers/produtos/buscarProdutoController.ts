@@ -2,10 +2,12 @@ import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 
 import { campoNaoEncontrado, isInteger } from "../../utils/validations";
+import useTokenDecoded from "../../utils/useTokenDecoded";
 
 export class BuscarProdutoController {
   async handle(request: Request, response: Response) {
     const { id } = request.params;
+    const token = useTokenDecoded(request);
 
     // Verifica se o id é um número inteiro
     isInteger({ value: id, nome: "código" });
@@ -15,6 +17,7 @@ export class BuscarProdutoController {
       .findFirst({
         where: {
           id: Number(id),
+          usuarioId: token.id,
         },
       })
       .catch(() => {

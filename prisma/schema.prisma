@@ -10,12 +10,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Usuario {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  email      String
+  senha      String
+  criadoEm   DateTime @default(now())
+  alteradoEm DateTime @default(now())
+
+  Token   Token[]
+  Produto Produto[]
+  Servico Servico[]
+
+  @@map("usuarios")
+}
+
 model Produto {
   id         Int      @id @default(autoincrement())
   nome       String
   preco      Float
   criadoEm   DateTime @default(now())
   alteradoEm DateTime @default(now())
+  Usuario    Usuario? @relation(fields: [usuarioId], references: [id])
+  usuarioId  Int?
 
   @@map("produtos")
 }
@@ -26,20 +43,10 @@ model Servico {
   preco      Float
   criadoEm   DateTime @default(now())
   alteradoEm DateTime @default(now())
+  Usuario    Usuario? @relation(fields: [usuarioId], references: [id])
+  usuarioId  Int?
 
   @@map("servicos")
-}
-
-model Usuario {
-  id         Int      @id @default(autoincrement())
-  nome       String
-  email      String
-  senha      String
-  criadoEm   DateTime @default(now())
-  alteradoEm DateTime @default(now())
-
-  Token Token[]
-  @@map("usuarios")
 }
 
 model Token {
