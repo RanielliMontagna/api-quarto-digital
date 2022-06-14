@@ -56,7 +56,7 @@ usuariosRouter.post("/", criarUsuario.handle);
 /**
  * @openapi
  * /usuarios:
- *   post:
+ *   delete:
  *     tags: [Usuários]
  *     description: Exclui um usuário pelo id informado.
  *     summary: Exclui um usuário.

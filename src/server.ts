@@ -7,12 +7,14 @@ import { Swagger } from "./swagger";
 
 const app = express();
 
-// Configurações do express e roteamento de rotas
+// Configurações do express
 app.use(express.json());
-app.use(routes);
 
 // Faz configurações do Swagger
 Swagger(app);
+
+// Rotas
+app.use(routes);
 
 // Middleware utilizado para o sentry
 SentryMiddleware(app);
