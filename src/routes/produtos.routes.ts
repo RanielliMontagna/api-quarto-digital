@@ -5,7 +5,6 @@ import { CriarProdutoController } from "../controllers/produtos/criarProdutoCont
 import { EditarProdutoController } from "../controllers/produtos/editarProdutoController";
 import { ExcluirProdutoController } from "../controllers/produtos/excluirProdutoController";
 import { ListarProdutosController } from "../controllers/produtos/listarProdutosController";
-import { JwtMiddleware } from "../middlewares/jwt";
 
 const produtosRouter = Router();
 

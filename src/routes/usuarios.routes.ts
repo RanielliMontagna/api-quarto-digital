@@ -5,7 +5,6 @@ import { CriarUsuarioController } from "../controllers/usuarios/criarUsuarioCont
 import { ExcluirUsuarioController } from "../controllers/usuarios/excluirUsuarioController";
 import { BuscarUsuarioController } from "../controllers/usuarios/buscarUsuarioController";
 import { EditarUsuarioController } from "../controllers/usuarios/editarUsuarioController";
-import { JwtMiddleware } from "../middlewares/jwt";
 
 const usuariosRouter = Router();
 

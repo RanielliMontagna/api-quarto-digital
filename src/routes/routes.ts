@@ -1,7 +1,10 @@
 import { Router } from "express";
+
 import { produtosRouter } from "./produtos.routes";
 import { servicosRouter } from "./servicos.routes";
 import { usuariosRouter } from "./usuarios.routes";
+import { clientesRouter } from "./clientes.routes";
+
 import { authenticationRouter } from "./authentication.routes";
 import { JwtMiddleware } from "../middlewares/jwt";
 
@@ -15,5 +18,6 @@ routes.use(JwtMiddleware);
 routes.use("/produtos", produtosRouter);
 routes.use("/servicos", servicosRouter);
 routes.use("/usuarios", usuariosRouter);
+routes.use("/clientes", clientesRouter);
 
 export { routes };

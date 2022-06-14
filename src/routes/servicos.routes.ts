@@ -5,7 +5,6 @@ import { CriarServicoController } from "../controllers/servicos/criarServicoCont
 import { EditarServicoController } from "../controllers/servicos/editarServicoController";
 import { ExcluirServicoController } from "../controllers/servicos/excluirServicoController";
 import { ListarServicosController } from "../controllers/servicos/listarServicosController";
-import { JwtMiddleware } from "../middlewares/jwt";
 
 const servicosRouter = Router();
 
