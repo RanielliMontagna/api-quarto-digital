@@ -40,12 +40,16 @@ export class LoginController {
         throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
       });
 
+    if (!usuario) {
+      throw new ValidationError("Usuário ou senha incorretos.");
+    }
+
     // Verifica se a senha está correta
     const senhaCorreta = await bcrypt.compare(senha, String(usuario?.senha));
 
     // Retorna erro caso a senha esteja incorreta
     if (!senhaCorreta) {
-      throw new ValidationError("Senha incorreta.");
+      throw new ValidationError("Usuário ou senha incorretos.");
     }
 
     let token;
