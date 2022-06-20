@@ -1,4 +1,5 @@
 import { Router } from "express";
+import cors from "cors";
 
 import { produtosRouter } from "./produtos.routes";
 import { servicosRouter } from "./servicos.routes";
@@ -11,6 +12,9 @@ import { CheckHealthController } from "../controllers/health/checkHealthControll
 
 const routes = Router();
 const checkHealth = new CheckHealthController();
+
+// Liberar origens das requisições
+routes.use(cors({ origin: "*" }));
 
 /**
  * @openapi
