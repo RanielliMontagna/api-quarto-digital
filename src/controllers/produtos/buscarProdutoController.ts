@@ -19,6 +19,11 @@ export class BuscarProdutoController {
           id: Number(id),
           usuarioId: token.id,
         },
+        select: {
+          id: true,
+          nome: true,
+          preco: true,
+        },
       })
       .catch(() => {
         //Retorna erro caso de algum problema na busca
@@ -28,6 +33,6 @@ export class BuscarProdutoController {
     // Erro caso o produto não seja encontrado
     campoNaoEncontrado({ value: produto, nome: "produto" });
 
-    return response.json(produto);
+    return response.json();
   }
 }

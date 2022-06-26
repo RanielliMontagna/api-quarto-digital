@@ -11,6 +11,11 @@ export class ListarProdutosController {
         where: {
           usuarioId: id,
         },
+        select: {
+          id: true,
+          nome: true,
+          preco: true,
+        },
       })
       .catch(() => {
         //Retornar erro caso os produtos não sejam listados
