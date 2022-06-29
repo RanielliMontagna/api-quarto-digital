@@ -16,6 +16,9 @@ export class ListarProdutosController {
           nome: true,
           preco: true,
         },
+        orderBy: {
+          nome: "asc",
+        },
       })
       .catch(() => {
         //Retornar erro caso os produtos não sejam listados

@@ -11,6 +11,9 @@ export class ListarClientesController {
         where: {
           usuarioId: id,
         },
+        orderBy: {
+          nome: "asc",
+        },
       })
       .catch(() => {
         //Retornar erro caso os clientes não sejam listados

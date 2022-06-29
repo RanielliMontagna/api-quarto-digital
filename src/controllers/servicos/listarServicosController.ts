@@ -11,6 +11,9 @@ export class ListarServicosController {
         where: {
           id: Number(id),
         },
+        orderBy: {
+          nome: "asc",
+        },
       })
       .catch(() => {
         //Retornar erro caso os serviços não sejam listados
