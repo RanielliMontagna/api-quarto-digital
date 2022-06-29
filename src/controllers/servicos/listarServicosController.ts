@@ -5,11 +5,24 @@ import useTokenDecoded from "../../utils/useTokenDecoded";
 export class ListarServicosController {
   async handle(request: Request, response: Response) {
     const { id } = useTokenDecoded(request);
+    const { query } = request;
 
-    const servico = await prismaClient.servico
+    let params = {};
+    // Parâmetros de search da query
+    if (query?.search) {
+      params = {
+        nome: {
+          contains: String(query?.search),
+          mode: "insensitive",
+        },
+      };
+    }
+
+    const servicos = await prismaClient.servico
       .findMany({
         where: {
           id: Number(id),
+          ...params,
         },
         orderBy: {
           nome: "asc",
@@ -20,6 +33,6 @@ export class ListarServicosController {
         throw new Error("Ocorreu um erro ao listar os serviços");
       });
 
-    return response.json(servico);
+    return response.json(servicos);
   }
 }

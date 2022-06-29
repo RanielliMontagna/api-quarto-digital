@@ -2,9 +2,25 @@ import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 
 export class ListarUsuariosController {
-  async handle(_: Request, response: Response) {
+  async handle(request: Request, response: Response) {
+    const { query } = request;
+
+    let params = {};
+    // Parâmetros de search da query
+    if (query?.search) {
+      params = {
+        nome: {
+          contains: String(query?.search),
+          mode: "insensitive",
+        },
+      };
+    }
+
     const usuario = await prismaClient.usuario
       .findMany({
+        where: {
+          ...params,
+        },
         orderBy: {
           nome: "asc",
         },

@@ -5,11 +5,25 @@ import useTokenDecoded from "../../utils/useTokenDecoded";
 export class ListarProdutosController {
   async handle(request: Request, response: Response) {
     const { id } = useTokenDecoded(request);
+    const { query } = request;
 
+    let params = {};
+    // Parâmetros de search da query
+    if (query?.search) {
+      params = {
+        nome: {
+          contains: String(query?.search),
+          mode: "insensitive",
+        },
+      };
+    }
+
+    // Endpoint para listar todos os produtos
     const produto = await prismaClient.produto
       .findMany({
         where: {
           usuarioId: id,
+          ...params,
         },
         select: {
           id: true,
