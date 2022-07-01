@@ -74,11 +74,11 @@ export class CriarClienteController {
       .create({
         data: {
           email,
+          cpfCnpj,
           nome,
           telefone,
           dataNasc,
           usuarioId: Number(id),
-          cpfCnpj,
         },
         select: {
           id: true,

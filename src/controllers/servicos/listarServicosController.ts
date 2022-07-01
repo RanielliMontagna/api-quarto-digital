@@ -21,7 +21,7 @@ export class ListarServicosController {
     const servicos = await prismaClient.servico
       .findMany({
         where: {
-          id: Number(id),
+          usuarioId: Number(id),
           ...params,
         },
         select: {

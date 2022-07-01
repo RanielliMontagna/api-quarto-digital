@@ -36,7 +36,7 @@ export class CriarServicoController {
         data: {
           nome,
           preco,
-          usuarioId: id,
+          usuarioId: Number(id),
         },
         select: {
           id: true,
