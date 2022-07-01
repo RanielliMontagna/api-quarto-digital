@@ -24,6 +24,11 @@ export class ListarServicosController {
           id: Number(id),
           ...params,
         },
+        select: {
+          id: true,
+          nome: true,
+          preco: true,
+        },
         orderBy: {
           nome: "asc",
         },

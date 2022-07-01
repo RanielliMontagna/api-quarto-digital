@@ -80,6 +80,14 @@ export class CriarClienteController {
           usuarioId: Number(id),
           cpfCnpj,
         },
+        select: {
+          id: true,
+          nome: true,
+          cpfCnpj: true,
+          email: true,
+          telefone: true,
+          dataNasc: true,
+        },
       })
       .catch(() => {
         //Retorna erro caso o cliente não seja criado

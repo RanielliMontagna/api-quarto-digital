@@ -38,6 +38,11 @@ export class CriarServicoController {
           preco,
           usuarioId: id,
         },
+        select: {
+          id: true,
+          nome: true,
+          preco: true,
+        },
       })
       .catch(() => {
         //Retorna erro caso o serviço não seja criado

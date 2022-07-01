@@ -38,6 +38,11 @@ export class CriarProdutoController {
           preco,
           usuarioId: Number(id),
         },
+        select: {
+          id: true,
+          nome: true,
+          preco: true,
+        },
       })
       .catch(() => {
         //Retorna erro caso o produto não seja criado

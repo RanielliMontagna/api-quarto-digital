@@ -43,6 +43,11 @@ export class EditarProdutoController {
           preco,
           alteradoEm: new Date(),
         },
+        select: {
+          id: true,
+          nome: true,
+          preco: true,
+        },
         where: {
           id,
         },

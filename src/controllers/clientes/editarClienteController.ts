@@ -91,6 +91,14 @@ export class EditarClienteController {
           dataNasc,
           alteradoEm: new Date(),
         },
+        select: {
+          id: true,
+          nome: true,
+          cpfCnpj: true,
+          email: true,
+          telefone: true,
+          dataNasc: true,
+        },
         where: {
           id: Number(id),
         },
