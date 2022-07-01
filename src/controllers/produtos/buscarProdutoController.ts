@@ -33,6 +33,6 @@ export class BuscarProdutoController {
     // Erro caso o produto não seja encontrado
     campoNaoEncontrado({ value: produto, nome: "produto" });
 
-    return response.json();
+    return response.json(produto);
   }
 }

@@ -25,6 +25,14 @@ export class ListarClientesController {
           usuarioId: id,
           ...params,
         },
+        select: {
+          id: true,
+          nome: true,
+          cpfCnpj: true,
+          email: true,
+          telefone: true,
+          dataNasc: true,
+        },
         orderBy: {
           nome: "asc",
         },

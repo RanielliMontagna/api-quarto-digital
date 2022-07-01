@@ -5,17 +5,15 @@ import {
   campoObrigatorio,
   composeValidator,
   emailValido,
-  isNumber,
+  isCpfCnpj,
   isString,
-  max999999,
-  min0,
 } from "../../utils/validations";
 import useTokenDecoded from "../../utils/useTokenDecoded";
 import { ValidationError } from "../../utils/errors/validationError";
 
 export class CriarClienteController {
   async handle(request: Request, response: Response) {
-    const { email, nome, telefone, dataNasc } = request.body;
+    const { email, nome, telefone, dataNasc, cpfCnpj } = request.body;
     const { id } = useTokenDecoded(request);
 
     // Validações no campo email
@@ -23,6 +21,13 @@ export class CriarClienteController {
       validators: [campoObrigatorio, isString, emailValido],
       value: email,
       nome: "email",
+    });
+
+    // Validações no campo cpfCnpj
+    composeValidator({
+      validators: [isString, isCpfCnpj],
+      value: cpfCnpj,
+      nome: "cpfCnpj",
     });
 
     // Validações no campo nome
@@ -46,14 +51,20 @@ export class CriarClienteController {
       nome: "data de nascimento",
     });
 
+    // Verifica se já existe um cliente com o mesmo cpfCnpj
+    if (cpfCnpj) {
+      const cliente = await prismaClient.cliente.findFirst({
+        where: { cpfCnpj, usuarioId: id },
+      });
+      if (cliente) {
+        throw new ValidationError("CPF/CNPJ já cadastrado");
+      }
+    }
+
     // Verificar se já existe um cliente com o email informado
     const clienteExistente = await prismaClient?.cliente?.findFirst({
-      where: {
-        email,
-        usuarioId: id,
-      },
+      where: { email, usuarioId: id },
     });
-
     if (clienteExistente) {
       throw new ValidationError("Já existe um cliente com este email");
     }
@@ -67,6 +78,7 @@ export class CriarClienteController {
           telefone,
           dataNasc,
           usuarioId: Number(id),
+          cpfCnpj,
         },
       })
       .catch(() => {

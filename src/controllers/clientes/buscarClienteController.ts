@@ -19,6 +19,14 @@ export class BuscarClienteController {
           id: Number(id),
           usuarioId: token.id,
         },
+        select: {
+          id: true,
+          nome: true,
+          cpfCnpj: true,
+          email: true,
+          telefone: true,
+          dataNasc: true,
+        },
       })
       .catch(() => {
         //Retorna erro caso de algum problema na busca
