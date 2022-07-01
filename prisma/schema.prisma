@@ -62,6 +62,7 @@ model Token {
 
 model Cliente {
   id         Int      @id @default(autoincrement())
+  cpfCnpj    String?  @unique
   nome       String
   email      String
   telefone   String
