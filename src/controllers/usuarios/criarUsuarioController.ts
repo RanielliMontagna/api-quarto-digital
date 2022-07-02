@@ -35,6 +35,14 @@ export class CriarUsuarioController {
       nome: "senha",
     });
 
+    // Verificar se já existe um usuário com o email informado
+    const emailExistente = await prismaClient?.usuario?.findFirst({
+      where: { email },
+    });
+    if (emailExistente) {
+      throw new ValidationError("Já existe um usuário com este email");
+    }
+
     // Criptografa a senha
     const senhaCriptografada = await bcrypt.hash(senha, 10);
 

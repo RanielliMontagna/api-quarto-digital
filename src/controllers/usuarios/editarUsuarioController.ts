@@ -41,6 +41,17 @@ export class EditarUsuarioController {
       nome: "senha",
     });
 
+    // Verificar se já existe um usuário com o email informado
+    const clienteExistente = await prismaClient?.usuario?.findFirst({
+      where: {
+        email,
+        NOT: { id: Number(id) },
+      },
+    });
+    if (clienteExistente) {
+      throw new ValidationError("Já existe um usuário com este email");
+    }
+
     // Edita o usuário no banco de dados
     const usuario = await prismaClient?.usuario
       ?.update({
