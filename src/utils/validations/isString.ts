@@ -6,6 +6,10 @@ interface IsString {
 }
 
 const isString = ({ value, nome }: IsString) => {
+  if (!value) {
+    return undefined;
+  }
+
   if (typeof value !== "string") {
     if (nome) {
       throw new ValidationError(`O ${nome} deve ser uma string`);

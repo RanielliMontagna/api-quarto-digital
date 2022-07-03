@@ -61,15 +61,15 @@ model Token {
 }
 
 model Cliente {
-  id         Int      @id @default(autoincrement())
-  cpfCnpj    String?  @unique
+  id         Int       @id @default(autoincrement())
+  cpfCnpj    String?   @unique
   nome       String
-  email      String   @unique
+  email      String?   @unique
   telefone   String
-  dataNasc   DateTime
-  criadoEm   DateTime @default(now())
-  alteradoEm DateTime @default(now())
-  Usuario    Usuario? @relation(fields: [usuarioId], references: [id])
+  dataNasc   DateTime?
+  criadoEm   DateTime  @default(now())
+  alteradoEm DateTime  @default(now())
+  Usuario    Usuario?  @relation(fields: [usuarioId], references: [id])
   usuarioId  Int?
 
 

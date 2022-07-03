@@ -18,7 +18,7 @@ export class CriarClienteController {
 
     // Validações no campo email
     composeValidator({
-      validators: [campoObrigatorio, isString, emailValido],
+      validators: [emailValido],
       value: email,
       nome: "email",
     });
@@ -46,7 +46,7 @@ export class CriarClienteController {
 
     // Validações no campo data de nascimento
     composeValidator({
-      validators: [campoObrigatorio, isString],
+      validators: [isString],
       value: dataNasc,
       nome: "data de nascimento",
     });
@@ -61,12 +61,14 @@ export class CriarClienteController {
       }
     }
 
-    // Verificar se já existe um cliente com o email informado
-    const clienteExistente = await prismaClient?.cliente?.findFirst({
-      where: { email, usuarioId: id },
-    });
-    if (clienteExistente) {
-      throw new ValidationError("Já existe um cliente com este email");
+    if (email) {
+      // Verificar se já existe um cliente com o email informado
+      const clienteExistente = await prismaClient?.cliente?.findFirst({
+        where: { email, usuarioId: id },
+      });
+      if (clienteExistente) {
+        throw new ValidationError("Já existe um cliente com este email");
+      }
     }
 
     // Cria o cliente no banco de dados

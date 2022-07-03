@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "clientes" ALTER COLUMN "email" DROP NOT NULL,
+ALTER COLUMN "dataNasc" DROP NOT NULL;

@@ -25,14 +25,14 @@ export class EditarClienteController {
 
     // Validações no campo cpfCnpj
     composeValidator({
-      validators: [campoObrigatorio, isString, isCpfCnpj],
+      validators: [isString, isCpfCnpj],
       value: cpfCnpj,
       nome: "cpfCnpj",
     });
 
     // Validações no campo email
     composeValidator({
-      validators: [campoObrigatorio, isString, emailValido],
+      validators: [isString, emailValido],
       value: email,
       nome: "email",
     });
@@ -53,7 +53,7 @@ export class EditarClienteController {
 
     // Validações no campo data de nascimento
     composeValidator({
-      validators: [campoObrigatorio, isString],
+      validators: [isString],
       value: dataNasc,
       nome: "data de nascimento",
     });
