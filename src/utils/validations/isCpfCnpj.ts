@@ -3,7 +3,7 @@ import { ValidationError } from "../errors/validationError";
 const isCpf = (cpf: string) => {
   cpf = cpf.replace(/[^\d]+/g, "");
   if (cpf == "") {
-    throw new ValidationError(`O valor ${cpf} não é um CPF válido`);
+    return undefined;
   }
 
   if (cpf.length != 11) {
@@ -48,7 +48,7 @@ const isCnpj = (cnpj: string) => {
   cnpj = cnpj.replace(/[^\d]+/g, "");
 
   if (cnpj == "") {
-    throw new ValidationError(`O valor ${cnpj} não é um CNPJ válido`);
+    return undefined;
   }
 
   if (cnpj.length != 14) {
@@ -102,6 +102,9 @@ const isCnpj = (cnpj: string) => {
 };
 
 const isCpfCnpj = ({ value }: { value: string; nome: string }) => {
+  if (!value) {
+    return undefined;
+  }
   if (!isNaN(Number(value))) {
     if (value.length === 11) {
       const cpf = isCpf(value);
