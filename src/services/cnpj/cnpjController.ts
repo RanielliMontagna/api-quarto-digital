@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import * as Sentry from "@sentry/node";
 
 import { isCnpj } from "../../utils/validations/isCpfCnpj";
 
