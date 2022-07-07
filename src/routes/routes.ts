@@ -5,6 +5,7 @@ import { produtosRouter } from "./produtos.routes";
 import { servicosRouter } from "./servicos.routes";
 import { usuariosRouter } from "./usuarios.routes";
 import { clientesRouter } from "./clientes.routes";
+import { cnpjRouter } from "./external.routes";
 
 import { authenticationRouter } from "./authentication.routes";
 import { JwtMiddleware } from "../middlewares/jwt";
@@ -40,5 +41,6 @@ routes.use("/produtos", produtosRouter);
 routes.use("/servicos", servicosRouter);
 routes.use("/usuarios", usuariosRouter);
 routes.use("/clientes", clientesRouter);
+routes.use("/", cnpjRouter);
 
 export { routes };
