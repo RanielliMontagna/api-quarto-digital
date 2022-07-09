@@ -5,6 +5,8 @@ import { routes } from "./routes/routes";
 import { SentryMiddleware } from "./middlewares/sentry";
 import { Swagger } from "./swagger";
 
+require("dotenv").config();
+
 const app = express();
 
 // Configurações do express
