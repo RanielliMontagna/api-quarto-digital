@@ -1,5 +1,16 @@
 import { ValidationError } from "../errors/validationError";
 
+const cnpjWithDots = (cnpj: string) => {
+  return cnpj.replace(
+    /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+    "$1.$2.$3/$4-$5"
+  );
+};
+
+const cpfWithDots = (cpf: string) => {
+  return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+};
+
 const isCpf = (cpf: string) => {
   cpf = cpf.replace(/[^\d]+/g, "");
   if (cpf == "") {
@@ -7,7 +18,9 @@ const isCpf = (cpf: string) => {
   }
 
   if (cpf.length != 11) {
-    throw new ValidationError(`O valor ${cpf} não é um CPF válido`);
+    throw new ValidationError(
+      `O valor ${cpfWithDots(cpf)} não é um CPF válido`
+    );
   }
 
   // Elimina CPFs invalidos conhecidos
@@ -23,7 +36,9 @@ const isCpf = (cpf: string) => {
     cpf == "88888888888" ||
     cpf == "99999999999"
   ) {
-    throw new ValidationError(`O valor ${cpf} não é um CPF válido`);
+    throw new ValidationError(
+      `O valor ${cpfWithDots(cpf)} não é um CPF válido`
+    );
   }
   // Valida 1o digito
   let add = 0;
@@ -31,7 +46,9 @@ const isCpf = (cpf: string) => {
   let rev = 11 - (add % 11);
   if (rev == 10 || rev == 11) rev = 0;
   if (rev != parseInt(cpf.charAt(9))) {
-    throw new ValidationError(`O valor ${cpf} não é um CPF válido`);
+    throw new ValidationError(
+      `O valor ${cpfWithDots(cpf)} não é um CPF válido`
+    );
   }
   // Valida 2o digito
   add = 0;
@@ -39,7 +56,9 @@ const isCpf = (cpf: string) => {
   rev = 11 - (add % 11);
   if (rev == 10 || rev == 11) rev = 0;
   if (rev != parseInt(cpf.charAt(10))) {
-    throw new ValidationError(`O valor ${cpf} não é um CPF válido`);
+    throw new ValidationError(
+      `O valor ${cpfWithDots(cpf)} não é um CPF válido`
+    );
   }
   return undefined;
 };
@@ -52,7 +71,9 @@ const isCnpj = (cnpj: string) => {
   }
 
   if (cnpj.length != 14) {
-    throw new ValidationError(`O valor ${cnpj} não é um CNPJ válido`);
+    throw new ValidationError(
+      `O valor ${cnpjWithDots(cnpj)} não é um CNPJ válido`
+    );
   }
 
   // Elimina CNPJs invalidos conhecidos
@@ -68,7 +89,9 @@ const isCnpj = (cnpj: string) => {
     cnpj == "88888888888888" ||
     cnpj == "99999999999999"
   ) {
-    throw new ValidationError(`O valor ${cnpj} não é um CNPJ válido`);
+    throw new ValidationError(
+      `O valor ${cnpjWithDots(cnpj)} não é um CNPJ válido`
+    );
   }
 
   // Valida DVs
@@ -83,7 +106,9 @@ const isCnpj = (cnpj: string) => {
   }
   let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
   if (resultado != Number(digitos.charAt(0))) {
-    throw new ValidationError(`O valor ${cnpj} não é um CNPJ válido`);
+    throw new ValidationError(
+      `O valor ${cnpjWithDots(cnpj)} não é um CNPJ válido`
+    );
   }
   tamanho = tamanho + 1;
   numeros = cnpj.substring(0, tamanho);
@@ -95,7 +120,9 @@ const isCnpj = (cnpj: string) => {
   }
   resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
   if (resultado != Number(digitos.charAt(1))) {
-    throw new ValidationError(`O valor ${cnpj} não é um CNPJ válido`);
+    throw new ValidationError(
+      `O valor ${cnpjWithDots(cnpj)} não é um CNPJ válido`
+    );
   }
 
   return undefined;
