@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import axios from "axios";
 
 import { isCnpj } from "../../utils/validations/isCpfCnpj";
+import { ValidationError } from "../../utils/errors/validationError";
 
 export class CnpjController {
   async handle(request: Request, response: Response) {
@@ -22,8 +23,12 @@ export class CnpjController {
         return response.json(res.data);
       }
       throw new Error("Erro ao consultar o CNPJ");
-    } catch (error) {
-      throw new Error(error as any);
+    } catch (err: any) {
+      if (err?.response.data.message === "not in cache") {
+        throw new ValidationError("CNPJ não encontrado");
+      } else {
+        throw new Error(err);
+      }
     }
   }
 }
