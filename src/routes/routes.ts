@@ -1,6 +1,7 @@
 import { Router } from "express";
 import cors from "cors";
 
+import { quartosRouter } from "./quartos.routes";
 import { produtosRouter } from "./produtos.routes";
 import { servicosRouter } from "./servicos.routes";
 import { usuariosRouter } from "./usuarios.routes";
@@ -37,6 +38,7 @@ routes.use("/", authenticationRouter);
 routes.use(JwtMiddleware);
 
 // Restante dos endpoints
+routes.use("/quartos", quartosRouter);
 routes.use("/produtos", produtosRouter);
 routes.use("/servicos", servicosRouter);
 routes.use("/usuarios", usuariosRouter);
