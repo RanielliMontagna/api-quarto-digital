@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "quartos" (
     "id" SERIAL NOT NULL,
-    "identificacao" TEXT NOT NULL,
+    "identificacao" INTEGER NOT NULL,
     "tipo" TEXT,
     "diaria" DOUBLE PRECISION NOT NULL,
     "status" INTEGER NOT NULL DEFAULT 0,

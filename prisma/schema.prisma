@@ -78,7 +78,7 @@ model Cliente {
 
 model Quarto {
   id            Int      @id @default(autoincrement())
-  identificacao String
+  identificacao Int
   tipo          String?
   diaria        Float
   status        Int      @default(0)
