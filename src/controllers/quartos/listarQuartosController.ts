@@ -11,7 +11,7 @@ export class ListarQuartosController {
     // Parâmetros de search da query
     if (query?.search) {
       params = {
-        nome: {
+        identificacao: {
           contains: String(query?.search),
           mode: "insensitive",
         },
