@@ -18,7 +18,7 @@ export class CriarQuartoController {
 
     // Validações no campo identificacao
     composeValidator({
-      validators: [campoObrigatorio, isString],
+      validators: [campoObrigatorio, isNumber, min0, max99999],
       value: identificacao,
       nome: "identificacao",
     });
