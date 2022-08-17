@@ -25,7 +25,37 @@ const alterarStatusQuarto = new AlterarStatusQuartoController();
  *     summary: Retorna os quartos cadastrados.
  *     responses:
  *       200:
- *         description: Retorna os quartos cadastrados.
+ *        description: Retorna os quartos cadastrados.
+ *        content:
+ *         application/json:
+ *          schema:
+ *           type: object
+ *           properties:
+ *            data:
+ *              type: array
+ *              items:
+ *               type: object
+ *               properties:
+ *                id:
+ *                 type: integer
+ *                 description: O id do quarto.
+ *                 example: 1
+ *                identificacao:
+ *                 type: number
+ *                 description: A identificação do quarto.
+ *                 example: 301
+ *                diaria:
+ *                  type: number
+ *                  description: A diária do quarto.
+ *                  example: 100.00
+ *                status:
+ *                  type: integer
+ *                  description: O status do quarto.
+ *                  example: 1
+ *                  enum:
+ *                  - 0 - Disponível
+ *                  - 1 - Ocupado
+ *                  - 2 - Em limpeza/manutenção
  */
 quartosRouter.get("/", listarQuarto.handle);
 
@@ -91,6 +121,7 @@ quartosRouter.put("/", editarQuarto.handle);
  *  responses:
  *      200:
  *          description: Retorna o quarto editado.
+ *
  */
 quartosRouter.put("/alterar-status/:id", alterarStatusQuarto.handle);
 
