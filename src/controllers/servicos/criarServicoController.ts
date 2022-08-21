@@ -10,11 +10,14 @@ import {
   min0,
 } from "../../utils/validations";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { ServicosRepository } from "../../repositories/servicos/servicosRepository";
 
 export class CriarServicoController {
   async handle(request: Request, response: Response) {
     const { nome, preco } = request.body;
     const { id } = useTokenDecoded(request);
+
+    const servicosRepository = new ServicosRepository();
 
     // Validações no campo nome
     composeValidator({
@@ -31,23 +34,11 @@ export class CriarServicoController {
     });
 
     // Cria o serviço no banco de dados
-    const servico = await prismaClient.servico
-      .create({
-        data: {
-          nome,
-          preco,
-          usuarioId: Number(id),
-        },
-        select: {
-          id: true,
-          nome: true,
-          preco: true,
-        },
-      })
-      .catch(() => {
-        //Retorna erro caso o serviço não seja criado
-        throw new Error("Ocorreu um erro ao criar o serviço.");
-      });
+    const servico = await servicosRepository.criarServico({
+      nome,
+      preco,
+      usuarioId: Number(id),
+    });
 
     return response.json(servico);
   }

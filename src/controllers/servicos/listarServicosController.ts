@@ -1,11 +1,14 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { ServicosRepository } from "../../repositories/servicos/servicosRepository";
 
 export class ListarServicosController {
   async handle(request: Request, response: Response) {
     const { id } = useTokenDecoded(request);
     const { query } = request;
+
+    const servicosRepository = new ServicosRepository();
 
     let params = {};
     // Parâmetros de search da query
@@ -18,25 +21,10 @@ export class ListarServicosController {
       };
     }
 
-    const servicos = await prismaClient.servico
-      .findMany({
-        where: {
-          usuarioId: Number(id),
-          ...params,
-        },
-        select: {
-          id: true,
-          nome: true,
-          preco: true,
-        },
-        orderBy: {
-          nome: "asc",
-        },
-      })
-      .catch(() => {
-        //Retornar erro caso os serviços não sejam listados
-        throw new Error("Ocorreu um erro ao listar os serviços");
-      });
+    const servicos = await servicosRepository.buscarServicos({
+      params,
+      usuarioId: Number(id),
+    });
 
     return response.json(servicos);
   }

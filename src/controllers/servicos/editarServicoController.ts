@@ -9,10 +9,13 @@ import {
   min0,
 } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { ServicosRepository } from "../../repositories/servicos/servicosRepository";
 
 export class EditarServicoController {
   async handle(request: Request, response: Response) {
     const { id, nome, preco } = request.body;
+
+    const servicosRepository = new ServicosRepository();
 
     // Validações no campo id
     composeValidator({
@@ -36,30 +39,11 @@ export class EditarServicoController {
     });
 
     // Edita o serviço no banco de dados
-    const servico = await prismaClient?.servico
-      ?.update({
-        data: {
-          nome,
-          preco,
-          alteradoEm: new Date(),
-        },
-        select: {
-          id: true,
-          nome: true,
-          preco: true,
-        },
-        where: {
-          id,
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o serviço não seja editado
-        if (error?.meta.cause === "Record to update not found.") {
-          throw new ValidationError("Serviço não encontrado.");
-        } else {
-          throw new Error("Erro ao editar serviço.");
-        }
-      });
+    const servico = await servicosRepository.editarServico({
+      id,
+      nome,
+      preco,
+    });
 
     return response.json(servico);
   }
