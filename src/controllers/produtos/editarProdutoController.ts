@@ -9,10 +9,13 @@ import {
   min0,
 } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { ProdutosRepository } from "../../repositories/produtos/produtosRepository";
 
 export class EditarProdutoController {
   async handle(request: Request, response: Response) {
     const { id, nome, preco } = request.body;
+
+    const produtosRepository = new ProdutosRepository();
 
     // Validações no campo id
     composeValidator({
@@ -36,30 +39,11 @@ export class EditarProdutoController {
     });
 
     // Edita o produto no banco de dados
-    const produto = await prismaClient?.produto
-      ?.update({
-        data: {
-          nome,
-          preco,
-          alteradoEm: new Date(),
-        },
-        select: {
-          id: true,
-          nome: true,
-          preco: true,
-        },
-        where: {
-          id,
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o produto não seja editado
-        if (error?.meta.cause === "Record to update not found.") {
-          throw new ValidationError("Produto não encontrado.");
-        } else {
-          throw new Error("Erro ao editar produto.");
-        }
-      });
+    const produto = await produtosRepository.editarProduto({
+      id,
+      nome,
+      preco,
+    });
 
     return response.json(produto);
   }

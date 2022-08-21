@@ -3,29 +3,19 @@ import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { ProdutosRepository } from "../../repositories/produtos/produtosRepository";
 
 export class ExcluirProdutoController {
   async handle(request: Request, response: Response) {
     const { id } = request.params;
+    const produtosRepository = new ProdutosRepository();
 
     // Verifica se o id é um número inteiro
     isInteger({ value: id, nome: "código" });
 
-    // Exclui o produto no banco de dados
-    await prismaClient.produto
-      .delete({
-        where: {
-          id: Number(id),
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o produto não seja excluído
-        if (error?.meta.cause === "Record to delete does not exist.") {
-          throw new ValidationError("Produto não encontrado.");
-        } else {
-          throw new Error("Ocorreu um erro ao excluir o produto.");
-        }
-      });
+    await produtosRepository.deletarProduto({
+      id: Number(id),
+    });
 
     return response.status(200).json();
   }

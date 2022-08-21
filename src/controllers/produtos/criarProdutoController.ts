@@ -10,11 +10,14 @@ import {
   min0,
 } from "../../utils/validations";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { ProdutosRepository } from "../../repositories/produtos/produtosRepository";
 
 export class CriarProdutoController {
   async handle(request: Request, response: Response) {
     const { nome, preco } = request.body;
     const { id } = useTokenDecoded(request);
+
+    const produtosRepository = new ProdutosRepository();
 
     // Validações no campo nome
     composeValidator({
@@ -31,23 +34,11 @@ export class CriarProdutoController {
     });
 
     // Cria o produto no banco de dados
-    const produto = await prismaClient.produto
-      .create({
-        data: {
-          nome,
-          preco,
-          usuarioId: Number(id),
-        },
-        select: {
-          id: true,
-          nome: true,
-          preco: true,
-        },
-      })
-      .catch(() => {
-        //Retorna erro caso o produto não seja criado
-        throw new Error("Ocorreu um erro ao criar o produto.");
-      });
+    const produto = await produtosRepository.criarProduto({
+      nome,
+      preco,
+      usuarioId: Number(id),
+    });
 
     return response.json(produto);
   }

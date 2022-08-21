@@ -1,11 +1,14 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { ProdutosRepository } from "../../repositories/produtos/produtosRepository";
 
 export class ListarProdutosController {
   async handle(request: Request, response: Response) {
     const { id } = useTokenDecoded(request);
     const { query } = request;
+
+    const produtosRepository = new ProdutosRepository();
 
     let params = {};
     // Parâmetros de search da query
@@ -19,26 +22,13 @@ export class ListarProdutosController {
     }
 
     // Endpoint para listar todos os produtos
-    const produto = await prismaClient.produto
-      .findMany({
-        where: {
-          usuarioId: id,
-          ...params,
-        },
-        select: {
-          id: true,
-          nome: true,
-          preco: true,
-        },
-        orderBy: {
-          nome: "asc",
-        },
-      })
-      .catch(() => {
-        //Retornar erro caso os produtos não sejam listados
-        throw new Error("Ocorreu um erro ao listar os produtos");
-      });
+    const produtos = await produtosRepository.buscarProdutos({
+      params,
+      usuarioId: Number(id),
+    });
 
-    return response.json(produto);
+    console.log(produtos);
+
+    return response.json(produtos);
   }
 }
