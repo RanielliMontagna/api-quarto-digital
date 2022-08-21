@@ -3,29 +3,18 @@ import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { ClientesRepository } from "../../repositories/clientes/clientesRepository";
 
 export class ExcluirClienteController {
   async handle(request: Request, response: Response) {
     const { id } = request.params;
+    const clientesRepository = new ClientesRepository();
 
     // Verifica se o id é um número inteiro
     isInteger({ value: id, nome: "código" });
 
     // Exclui o cliente no banco de dados
-    await prismaClient.cliente
-      .delete({
-        where: {
-          id: Number(id),
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o cliente não seja excluído
-        if (error?.meta.cause === "Record to delete does not exist.") {
-          throw new ValidationError("Cliente não encontrado.");
-        } else {
-          throw new Error("Ocorreu um erro ao excluir o cliente.");
-        }
-      });
+    await clientesRepository.deletarCliente({ id: Number(id) });
 
     return response.status(200).json();
   }

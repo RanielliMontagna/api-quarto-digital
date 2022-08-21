@@ -10,11 +10,14 @@ import {
 } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { ClientesRepository } from "../../repositories/clientes/clientesRepository";
 
 export class EditarClienteController {
   async handle(request: Request, response: Response) {
     const { id, email, nome, telefone, dataNasc, cpfCnpj } = request.body;
     const token = useTokenDecoded(request);
+
+    const clientesRepository = new ClientesRepository();
 
     // Validações no campo id
     composeValidator({
@@ -82,35 +85,14 @@ export class EditarClienteController {
     }
 
     // Edita o cliente no banco de dados
-    const cliente = await prismaClient?.cliente
-      ?.update({
-        data: {
-          email,
-          nome,
-          telefone,
-          dataNasc,
-          alteradoEm: new Date(),
-        },
-        select: {
-          id: true,
-          nome: true,
-          cpfCnpj: true,
-          email: true,
-          telefone: true,
-          dataNasc: true,
-        },
-        where: {
-          id: Number(id),
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o cliente não seja editado
-        if (error?.meta.cause === "Record to update not found.") {
-          throw new ValidationError("Cliente não encontrado.");
-        } else {
-          throw new Error("Erro ao editar cliente.");
-        }
-      });
+    const cliente = await clientesRepository.editarCliente({
+      id: Number(id),
+      email,
+      nome,
+      telefone,
+      dataNasc,
+      cpfCnpj,
+    });
 
     return response.json(cliente);
   }

@@ -1,11 +1,14 @@
 import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { ClientesRepository } from "../../repositories/clientes/clientesRepository";
 
 export class ListarClientesController {
   async handle(request: Request, response: Response) {
     const { id } = useTokenDecoded(request);
     const { query } = request;
+
+    const clientesRepository = new ClientesRepository();
 
     let params = {};
     // Parâmetros de search da query
@@ -19,28 +22,10 @@ export class ListarClientesController {
     }
 
     // Endpoint para listar todos os clientes
-    const clientes = await prismaClient.cliente
-      .findMany({
-        where: {
-          usuarioId: id,
-          ...params,
-        },
-        select: {
-          id: true,
-          nome: true,
-          cpfCnpj: true,
-          email: true,
-          telefone: true,
-          dataNasc: true,
-        },
-        orderBy: {
-          nome: "asc",
-        },
-      })
-      .catch(() => {
-        //Retornar erro caso os clientes não sejam listados
-        throw new Error("Ocorreu um erro ao listar os clientes");
-      });
+    const clientes = await clientesRepository.buscarClientes({
+      params,
+      usuarioId: Number(id),
+    });
 
     return response.json(clientes);
   }

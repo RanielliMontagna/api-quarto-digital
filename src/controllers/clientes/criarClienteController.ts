@@ -10,11 +10,14 @@ import {
 } from "../../utils/validations";
 import useTokenDecoded from "../../utils/useTokenDecoded";
 import { ValidationError } from "../../utils/errors/validationError";
+import { ClientesRepository } from "../../repositories/clientes/clientesRepository";
 
 export class CriarClienteController {
   async handle(request: Request, response: Response) {
     const { email, nome, telefone, dataNasc, cpfCnpj } = request.body;
     const { id } = useTokenDecoded(request);
+
+    const clientesRepository = new ClientesRepository();
 
     // Validações no campo email
     composeValidator({
@@ -72,29 +75,14 @@ export class CriarClienteController {
     }
 
     // Cria o cliente no banco de dados
-    const cliente = await prismaClient.cliente
-      .create({
-        data: {
-          email,
-          cpfCnpj,
-          nome,
-          telefone,
-          dataNasc,
-          usuarioId: Number(id),
-        },
-        select: {
-          id: true,
-          nome: true,
-          cpfCnpj: true,
-          email: true,
-          telefone: true,
-          dataNasc: true,
-        },
-      })
-      .catch(() => {
-        //Retorna erro caso o cliente não seja criado
-        throw new Error("Ocorreu um erro ao criar o cliente.");
-      });
+    const cliente = await clientesRepository.criarCliente({
+      email,
+      nome,
+      telefone,
+      dataNasc,
+      cpfCnpj,
+      usuarioId: Number(id),
+    });
 
     return response.json(cliente);
   }
