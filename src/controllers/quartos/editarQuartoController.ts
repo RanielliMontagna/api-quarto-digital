@@ -1,18 +1,18 @@
-import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 import {
   campoObrigatorio,
   composeValidator,
   isNumber,
-  isString,
   max99999,
   min0,
 } from "../../utils/validations";
-import { ValidationError } from "../../utils/errors/validationError";
+import { QuartosRepository } from "../../repositories/quartos/quartosRepository";
 
 export class EditarQuartoController {
   async handle(request: Request, response: Response) {
     const { id, identificacao, diaria } = request.body;
+
+    const quartosRepository = new QuartosRepository();
 
     // Validações no campo id
     composeValidator({
@@ -36,31 +36,11 @@ export class EditarQuartoController {
     });
 
     // Edita o quarto no banco de dados
-    const quarto = await prismaClient?.quarto
-      ?.update({
-        data: {
-          identificacao,
-          diaria,
-          alteradoEm: new Date(),
-        },
-        select: {
-          id: true,
-          identificacao: true,
-          diaria: true,
-          status: true,
-        },
-        where: {
-          id,
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o quarto não seja editado
-        if (error?.meta.cause === "Record to update not found.") {
-          throw new ValidationError("Quarto não encontrado.");
-        } else {
-          throw new Error("Erro ao editar quarto.");
-        }
-      });
+    const quarto = await quartosRepository.editarQuarto({
+      id,
+      identificacao,
+      diaria,
+    });
 
     return response.json(quarto);
   }

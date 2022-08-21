@@ -1,11 +1,13 @@
-import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { QuartosRepository } from "../../repositories/quartos/quartosRepository";
 
 export class ListarQuartosController {
   async handle(request: Request, response: Response) {
     const { id } = useTokenDecoded(request);
     const { query } = request;
+
+    const quartosRepository = new QuartosRepository();
 
     let params = {};
     // Parâmetros de search da query
@@ -19,27 +21,11 @@ export class ListarQuartosController {
     }
 
     // Endpoint para listar todos os quartos
-    const quarto = await prismaClient.quarto
-      .findMany({
-        where: {
-          usuarioId: id,
-          ...params,
-        },
-        select: {
-          id: true,
-          identificacao: true,
-          diaria: true,
-          status: true,
-        },
-        orderBy: {
-          identificacao: "asc",
-        },
-      })
-      .catch(() => {
-        //Retornar erro caso os quartos não sejam listados
-        throw new Error("Ocorreu um erro ao listar os quartos");
-      });
+    const quartos = await quartosRepository.buscarQuartos({
+      params,
+      usuarioId: Number(id),
+    });
 
-    return response.json(quarto);
+    return response.json(quartos);
   }
 }

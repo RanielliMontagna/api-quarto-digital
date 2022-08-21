@@ -1,20 +1,21 @@
-import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 
 import {
   campoObrigatorio,
   composeValidator,
   isNumber,
-  isString,
   max99999,
   min0,
 } from "../../utils/validations";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { QuartosRepository } from "../../repositories/quartos/quartosRepository";
 
 export class CriarQuartoController {
   async handle(request: Request, response: Response) {
     const { identificacao, diaria } = request.body;
     const { id } = useTokenDecoded(request);
+
+    const quartosRepository = new QuartosRepository();
 
     // Validações no campo identificacao
     composeValidator({
@@ -31,25 +32,11 @@ export class CriarQuartoController {
     });
 
     // Cria o quarto no banco de dados
-    const quarto = await prismaClient.quarto
-      .create({
-        data: {
-          identificacao,
-          diaria,
-          status: 0,
-          usuarioId: Number(id),
-        },
-        select: {
-          id: true,
-          identificacao: true,
-          diaria: true,
-          status: true,
-        },
-      })
-      .catch(() => {
-        //Retorna erro caso o quarto não seja criado
-        throw new Error("Ocorreu um erro ao criar o quarto.");
-      });
+    const quarto = await quartosRepository.criarQuarto({
+      identificacao,
+      diaria,
+      usuarioId: Number(id),
+    });
 
     return response.json(quarto);
   }
