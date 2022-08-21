@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
-import { prismaClient } from "../../database/prismaClient";
 import {
   campoObrigatorio,
   composeValidator,
@@ -38,9 +37,7 @@ export class CriarUsuarioController {
     });
 
     // Verificar se já existe um usuário com o email informado
-    const emailExistente = await prismaClient?.usuario?.findFirst({
-      where: { email },
-    });
+    const emailExistente = await usuariosRepository.emailJaExiste({ email });
     if (emailExistente) {
       throw new ValidationError("Já existe um usuário com este email");
     }
@@ -49,16 +46,7 @@ export class CriarUsuarioController {
     const senhaCriptografada = await bcrypt.hash(senha, 10);
 
     // Verifica se o usuário existe no banco de dados
-    const usuarioExistente = await prismaClient.usuario
-      .findFirst({
-        where: {
-          email,
-        },
-      })
-      .catch(() => {
-        //Retorna erro caso o usuário não seja encontrado
-        throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
-      });
+    const usuarioExistente = await usuariosRepository.usuarioExiste({ email });
 
     if (usuarioExistente) {
       throw new ValidationError("Usuário já existe.");

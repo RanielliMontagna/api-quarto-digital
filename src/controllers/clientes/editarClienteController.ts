@@ -1,4 +1,3 @@
-import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 import {
   campoObrigatorio,
@@ -63,8 +62,10 @@ export class EditarClienteController {
 
     // Verifica se já existe um cliente com o mesmo cpfCnpj
     if (cpfCnpj) {
-      const cliente = await prismaClient.cliente.findFirst({
-        where: { cpfCnpj, usuarioId: token.id, NOT: { id: Number(id) } },
+      const cliente = await clientesRepository.cpfCnpjJaExiste({
+        cpfCnpj,
+        idCliente: id,
+        idUsuario: token.id,
       });
       if (cliente) {
         throw new ValidationError("Já existe um cliente com este CPF/CNPJ");
@@ -72,12 +73,10 @@ export class EditarClienteController {
     }
 
     // Verificar se já existe um cliente com o email informado
-    const clienteExistente = await prismaClient?.cliente?.findFirst({
-      where: {
-        email,
-        usuarioId: token.id,
-        NOT: { id: Number(id) },
-      },
+    const clienteExistente = await clientesRepository.emailJaExiste({
+      email,
+      idCliente: id,
+      idUsuario: token.id,
     });
 
     if (clienteExistente) {

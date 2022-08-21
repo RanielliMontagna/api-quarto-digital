@@ -24,3 +24,14 @@ export interface IEditarCliente extends Omit<ICriarCliente, "usuarioId"> {
 export interface IDeletarCliente {
   id: number;
 }
+export interface IEmailJaExiste {
+  email: string;
+  idCliente?: number;
+  idUsuario: number;
+}
+
+export interface ICpfCnpjJaExiste {
+  cpfCnpj: string;
+  idCliente?: number;
+  idUsuario: number;
+}

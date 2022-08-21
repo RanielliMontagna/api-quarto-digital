@@ -7,6 +7,7 @@ import type {
   ICriarUsuario,
   IDeletarUsuario,
   IEditarUsuario,
+  IEmailJaExiste,
 } from "./usuariosRepository.types";
 
 export class UsuariosRepository {
@@ -101,5 +102,29 @@ export class UsuariosRepository {
           throw new Error("Ocorreu um erro ao excluir o usuario.");
         }
       });
+  }
+
+  // Verifica se o email já está cadastrado
+  async emailJaExiste({ email, idUsuario }: IEmailJaExiste) {
+    const clienteExistente = await prismaClient?.usuario?.findFirst({
+      where: {
+        email,
+        NOT: { id: idUsuario ? Number(idUsuario) : undefined },
+      },
+    });
+
+    return clienteExistente;
+  }
+
+  // Verifica se o usuário existe
+  async usuarioExiste({ email }: { email: string }) {
+    const usuarioExistente = await prismaClient.usuario
+      .findFirst({ where: { email } })
+      .catch(() => {
+        //Retorna erro caso o usuário não seja encontrado
+        throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
+      });
+
+    return usuarioExistente;
   }
 }

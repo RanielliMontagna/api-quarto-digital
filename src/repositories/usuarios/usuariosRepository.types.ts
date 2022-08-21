@@ -19,3 +19,8 @@ export interface IEditarUsuario extends Omit<ICriarUsuario, "usuarioId"> {
 export interface IDeletarUsuario {
   id: number;
 }
+
+export interface IEmailJaExiste {
+  email: string;
+  idUsuario?: number;
+}

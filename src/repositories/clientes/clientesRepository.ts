@@ -4,9 +4,11 @@ import { ValidationError } from "../../utils/errors/validationError";
 import type {
   IBuscarCliente,
   IBuscarClientes,
+  ICpfCnpjJaExiste,
   ICriarCliente,
   IDeletarCliente,
   IEditarCliente,
+  IEmailJaExiste,
 } from "./clientesRepository.types";
 
 export class ClientesRepository {
@@ -143,5 +145,31 @@ export class ClientesRepository {
           throw new Error("Ocorreu um erro ao excluir o cliente.");
         }
       });
+  }
+
+  // Verifica se o email já está cadastrado
+  async emailJaExiste({ email, idUsuario, idCliente }: IEmailJaExiste) {
+    const clienteExistente = await prismaClient?.cliente?.findFirst({
+      where: {
+        email,
+        usuarioId: Number(idUsuario),
+        NOT: { id: idCliente ? Number(idCliente) : undefined },
+      },
+    });
+
+    return clienteExistente;
+  }
+
+  // Verifica se o cpf/cnpj já está cadastrado
+  async cpfCnpjJaExiste({ cpfCnpj, idUsuario, idCliente }: ICpfCnpjJaExiste) {
+    const clienteExistente = await prismaClient?.cliente?.findFirst({
+      where: {
+        cpfCnpj,
+        usuarioId: Number(idUsuario),
+        NOT: { id: idCliente ? Number(idCliente) : undefined },
+      },
+    });
+
+    return clienteExistente;
   }
 }
