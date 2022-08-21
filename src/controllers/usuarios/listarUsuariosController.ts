@@ -1,9 +1,11 @@
-import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
+import { UsuariosRepository } from "../../repositories/usuarios/usuariosRepository";
 
 export class ListarUsuariosController {
   async handle(request: Request, response: Response) {
     const { query } = request;
+
+    const usuariosRepository = new UsuariosRepository();
 
     let params = {};
     // Parâmetros de search da query
@@ -16,20 +18,8 @@ export class ListarUsuariosController {
       };
     }
 
-    const usuario = await prismaClient.usuario
-      .findMany({
-        where: {
-          ...params,
-        },
-        orderBy: {
-          nome: "asc",
-        },
-      })
-      .catch(() => {
-        //Retornar erro caso os usuários não sejam listados
-        throw new Error("Ocorreu um erro ao listar os usuários");
-      });
+    const usuarios = await usuariosRepository.buscarUsuarios({ params });
 
-    return response.json(usuario);
+    return response.json(usuarios);
   }
 }

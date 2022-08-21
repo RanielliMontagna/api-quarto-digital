@@ -9,10 +9,12 @@ import {
   isString,
 } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { UsuariosRepository } from "../../repositories/usuarios/usuariosRepository";
 
 export class CriarUsuarioController {
   async handle(request: Request, response: Response) {
     const { email, nome, senha } = request.body;
+    const usuariosRepository = new UsuariosRepository();
 
     // Validações no campo email
     composeValidator({
@@ -62,18 +64,11 @@ export class CriarUsuarioController {
       throw new ValidationError("Usuário já existe.");
     } else {
       // Cria o usuário no banco de dados
-      const usuario = await prismaClient.usuario
-        .create({
-          data: {
-            email: email.toLowerCase(),
-            nome,
-            senha: senhaCriptografada,
-          },
-        })
-        .catch(() => {
-          //Retorna erro caso o usuário não seja criado
-          throw new Error("Ocorreu um erro ao criar o usuário.");
-        });
+      const usuario = usuariosRepository.criarUsuario({
+        email,
+        nome,
+        senha: senhaCriptografada,
+      });
 
       return response.json(usuario);
     }

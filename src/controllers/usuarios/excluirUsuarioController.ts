@@ -2,11 +2,13 @@ import { Request, Response } from "express";
 import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";
-import { ValidationError } from "../../utils/errors/validationError";
+import { UsuariosRepository } from "../../repositories/usuarios/usuariosRepository";
 
 export class ExcluirUsuarioController {
   async handle(request: Request, response: Response) {
     const { id } = request.params;
+
+    const usuariosRepository = new UsuariosRepository();
 
     // Verifica se o id é um número inteiro
     isInteger({ value: id, nome: "código" });
@@ -19,20 +21,7 @@ export class ExcluirUsuarioController {
     });
 
     // Exclui o produto no banco de dados
-    await prismaClient.usuario
-      .delete({
-        where: {
-          id: Number(id),
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o produto não seja excluído
-        if (error?.meta.cause === "Record to delete does not exist.") {
-          throw new ValidationError("Usuário não encontrado.");
-        } else {
-          throw new Error("Ocorreu um erro ao excluir o usuário.");
-        }
-      });
+    usuariosRepository.deletarUsuario({ id: Number(id) });
 
     return response.status(200).json();
   }

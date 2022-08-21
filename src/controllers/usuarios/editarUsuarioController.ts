@@ -1,5 +1,7 @@
-import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import { prismaClient } from "../../database/prismaClient";
+
 import {
   campoObrigatorio,
   composeValidator,
@@ -8,10 +10,12 @@ import {
   isString,
 } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { UsuariosRepository } from "../../repositories/usuarios/usuariosRepository";
 
 export class EditarUsuarioController {
   async handle(request: Request, response: Response) {
     const { id, email, nome, senha } = request.body;
+    const usuariosRepository = new UsuariosRepository();
 
     // Validações no campo id
     composeValidator({
@@ -52,27 +56,15 @@ export class EditarUsuarioController {
       throw new ValidationError("Já existe um usuário com este email");
     }
 
+    const senhaCriptografada = await bcrypt.hash(senha, 10);
+
     // Edita o usuário no banco de dados
-    const usuario = await prismaClient?.usuario
-      ?.update({
-        data: {
-          email: email.toLowerCase(),
-          nome,
-          senha,
-          alteradoEm: new Date(),
-        },
-        where: {
-          id,
-        },
-      })
-      .catch((error) => {
-        //Retorna erro caso o usuário não seja editado
-        if (error?.meta.cause === "Record to update not found.") {
-          throw new ValidationError("Usuário não encontrado.");
-        } else {
-          throw new Error("Erro ao editar usuário.");
-        }
-      });
+    const usuario = await usuariosRepository.editarUsuario({
+      id: Number(id),
+      email,
+      nome,
+      senha: senhaCriptografada,
+    });
 
     return response.json(usuario);
   }

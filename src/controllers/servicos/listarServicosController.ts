@@ -1,4 +1,3 @@
-import { prismaClient } from "../../database/prismaClient";
 import { Request, Response } from "express";
 import useTokenDecoded from "../../utils/useTokenDecoded";
 import { ServicosRepository } from "../../repositories/servicos/servicosRepository";

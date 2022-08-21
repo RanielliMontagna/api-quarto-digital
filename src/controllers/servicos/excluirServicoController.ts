@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import { prismaClient } from "../../database/prismaClient";
 
 import { isInteger } from "../../utils/validations";
-import { ValidationError } from "../../utils/errors/validationError";
 import { ServicosRepository } from "../../repositories/servicos/servicosRepository";
 
 export class ExcluirServicoController {
