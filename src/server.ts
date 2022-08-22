@@ -24,3 +24,5 @@ SentryMiddleware(app);
 // Inicia o servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server está rodando na porta ${PORT}!`));
+
+export { app };
