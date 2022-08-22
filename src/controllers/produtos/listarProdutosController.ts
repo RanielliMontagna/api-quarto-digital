@@ -26,8 +26,6 @@ export class ListarProdutosController {
       usuarioId: Number(id),
     });
 
-    console.log(produtos);
-
     return response.json(produtos);
   }
 }
