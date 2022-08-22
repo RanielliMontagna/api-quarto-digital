@@ -27,3 +27,9 @@ export interface IAlterarStatusQuarto {
   id: number;
   status: number;
 }
+
+export interface IIdentificacaoExiste {
+  identificacao: number;
+  idUsuario: number;
+  idQuarto?: number;
+}

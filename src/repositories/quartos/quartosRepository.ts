@@ -8,6 +8,7 @@ import type {
   ICriarQuarto,
   IDeletarQuarto,
   IEditarQuarto,
+  IIdentificacaoExiste,
 } from "./quartosRepository.types";
 
 export class QuartosRepository {
@@ -149,6 +150,23 @@ export class QuartosRepository {
           throw new Error("Erro ao atualizar o status do quarto.");
         }
       });
+
+    return quarto;
+  }
+
+  // Verificar se a identificação do quarto já existe
+  async identificacaoJaExiste({
+    identificacao,
+    idUsuario,
+    idQuarto,
+  }: IIdentificacaoExiste) {
+    const quarto = await prismaClient.quarto.findFirst({
+      where: {
+        identificacao,
+        usuarioId: Number(idUsuario),
+        NOT: { id: idQuarto ? Number(idQuarto) : undefined },
+      },
+    });
 
     return quarto;
   }

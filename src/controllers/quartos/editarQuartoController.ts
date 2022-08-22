@@ -7,10 +7,12 @@ import {
   min0,
 } from "../../utils/validations";
 import { QuartosRepository } from "../../repositories/quartos/quartosRepository";
+import useTokenDecoded from "../../utils/useTokenDecoded";
 
 export class EditarQuartoController {
   async handle(request: Request, response: Response) {
     const { id, identificacao, diaria } = request.body;
+    const token = useTokenDecoded(request);
 
     const quartosRepository = new QuartosRepository();
 
@@ -34,6 +36,17 @@ export class EditarQuartoController {
       value: diaria,
       nome: "diaria",
     });
+
+    // Verificar se a identificação já existe
+    const quartoJaExiste = await quartosRepository.identificacaoJaExiste({
+      identificacao,
+      idUsuario: Number(token.id),
+      idQuarto: id,
+    });
+
+    if (quartoJaExiste) {
+      throw new Error("Identificação já existente.");
+    }
 
     // Edita o quarto no banco de dados
     const quarto = await quartosRepository.editarQuarto({

@@ -31,6 +31,16 @@ export class CriarQuartoController {
       nome: "diaria",
     });
 
+    // Verificar se a identificação já existe
+    const quartoJaExiste = await quartosRepository.identificacaoJaExiste({
+      identificacao,
+      idUsuario: id,
+    });
+
+    if (quartoJaExiste) {
+      throw new Error("Identificação já existente.");
+    }
+
     // Cria o quarto no banco de dados
     const quarto = await quartosRepository.criarQuarto({
       identificacao,
