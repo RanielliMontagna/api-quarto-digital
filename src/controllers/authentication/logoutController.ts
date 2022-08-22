@@ -1,19 +1,15 @@
 import { Request, Response } from "express";
-import { prismaClient } from "../../database/prismaClient";
-import jwt from "jsonwebtoken";
-import { IToken } from "../../middlewares/jwt";
 import useTokenDecoded from "../../utils/useTokenDecoded";
+import { AuthenticationRepository } from "../../repositories/authentication/authenticationRepository";
 
 export class LogoutController {
   async handle(request: Request, response: Response) {
     const { id } = useTokenDecoded(request);
 
+    const authenticationRepository = new AuthenticationRepository();
+
     // Exclui tokens existentes do usuário
-    await prismaClient.token.deleteMany({
-      where: {
-        usuario: { id: Number(id) },
-      },
-    });
+    await authenticationRepository.deletarToken({ id: Number(id) });
 
     return response.status(200).json();
   }

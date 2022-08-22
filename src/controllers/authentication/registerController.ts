@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { prismaClient } from "../../database/prismaClient";
 
 import {
   campoObrigatorio,
@@ -10,10 +9,15 @@ import {
   isString,
 } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { AuthenticationRepository } from "../../repositories/authentication/authenticationRepository";
+import { UsuariosRepository } from "../../repositories/usuarios/usuariosRepository";
 
 export class RegisterController {
   async handle(request: Request, response: Response) {
     const { email, nome, senha } = request.body;
+
+    const usuariosRepository = new UsuariosRepository();
+    const authenticationRepository = new AuthenticationRepository();
 
     // Validações no campo email
     composeValidator({
@@ -40,27 +44,16 @@ export class RegisterController {
     const senhaCriptografada = await bcrypt.hash(senha, 10);
 
     // Verifica se o usuário existe no banco de dados
-    const usuario = await prismaClient.usuario
-      .findFirst({
-        where: {
-          email,
-        },
-      })
-      .catch(() => {
-        //Retorna erro caso o usuário não seja encontrado
-        throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
-      });
+    const usuario = await usuariosRepository.usuarioExiste({ email });
 
     if (usuario) {
       throw new ValidationError("Usuário já existe.");
     } else {
       // Cria o usuário
-      const usuarioCriado = await prismaClient.usuario.create({
-        data: {
-          nome,
-          email: email.toLowerCase(),
-          senha: senhaCriptografada,
-        },
+      const usuarioCriado = await usuariosRepository.criarUsuario({
+        email: email.toLowerCase(),
+        nome,
+        senha: senhaCriptografada,
       });
 
       // Cria o token de autenticação
@@ -78,11 +71,9 @@ export class RegisterController {
       }
 
       // Guarda o token no banco de dados
-      await prismaClient.token.create({
-        data: {
-          token,
-          usuarioId: usuarioCriado.id,
-        },
+      await authenticationRepository.guardarToken({
+        token,
+        id: usuarioCriado.id,
       });
 
       // Retorna o token

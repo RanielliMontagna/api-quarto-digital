@@ -2,17 +2,21 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import { prismaClient } from "../../database/prismaClient";
 import {
   campoObrigatorio,
   composeValidator,
   isString,
 } from "../../utils/validations";
 import { ValidationError } from "../../utils/errors/validationError";
+import { AuthenticationRepository } from "../../repositories/authentication/authenticationRepository";
+import { UsuariosRepository } from "../../repositories/usuarios/usuariosRepository";
 
 export class LoginController {
   async handle(request: Request, response: Response) {
     const { email, senha } = request.body;
+
+    const usuariosRepository = new UsuariosRepository();
+    const authenticationRepository = new AuthenticationRepository();
 
     // Validações no campo email
     composeValidator({
@@ -29,16 +33,7 @@ export class LoginController {
     });
 
     // Verifica se o usuário existe no banco de dados
-    const usuario = await prismaClient.usuario
-      .findFirst({
-        where: {
-          email,
-        },
-      })
-      .catch(() => {
-        //Retorna erro caso o usuário não seja encontrado
-        throw new ValidationError("Ocorreu um erro ao encontrar o usuário.");
-      });
+    const usuario = await usuariosRepository.usuarioExiste({ email });
 
     if (!usuario) {
       throw new ValidationError("Usuário ou senha incorretos.");
@@ -68,11 +63,9 @@ export class LoginController {
 
     if (usuario) {
       //Guardar token no banco de dados
-      await prismaClient.token.create({
-        data: {
-          token,
-          usuarioId: usuario?.id,
-        },
+      await authenticationRepository.guardarToken({
+        token,
+        id: usuario?.id,
       });
     }
 
