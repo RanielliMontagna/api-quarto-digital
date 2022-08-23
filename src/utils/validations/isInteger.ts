@@ -6,7 +6,7 @@ interface IsInteger {
 }
 
 const isInteger = ({ value, nome }: IsInteger) => {
-  if (!Number.isInteger(Number(value))) {
+  if (!Number.isInteger(value)) {
     if (nome) {
       throw new ValidationError(`O ${nome} deve ser um número`);
     } else {
