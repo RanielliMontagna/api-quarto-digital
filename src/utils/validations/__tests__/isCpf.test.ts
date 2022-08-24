@@ -6,8 +6,8 @@ describe("isCpf - Função para verificar se o valor é um CPF válido", () => {
     expect(isCpf("040.971.050-43")).toBeUndefined();
   });
 
-  it("Deve retornar undefined se o cpf for vazio", () => {
-    expect(() => isCpf("")).toBeUndefined();
+  it("Deve retornar undefined se o valor for vazio", () => {
+    expect(isCpf("")).toBeUndefined();
   });
 
   it("Deve retornar um erro se o CPF for inválido", () => {

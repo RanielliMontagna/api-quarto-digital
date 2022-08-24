@@ -39,7 +39,7 @@ export class CriarClienteController {
       nome: "nome",
     });
 
-    // Validações no campo nome
+    // Validações no campo telefone
     composeValidator({
       validators: [campoObrigatorio, isString],
       value: telefone,

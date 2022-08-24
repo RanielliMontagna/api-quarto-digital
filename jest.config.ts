@@ -28,7 +28,7 @@ export default {
   // The directory where Jest should output its coverage files
   coverageThreshold: {
     global: {
-      branches: 100,
+      branches: 90,
       functions: 100,
       lines: 100,
       statements: 100,

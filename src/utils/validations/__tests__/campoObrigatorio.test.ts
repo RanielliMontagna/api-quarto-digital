@@ -1,6 +1,6 @@
 import { campoObrigatorio } from "../campoObrigatorio";
 
-// Testes campo não encontrado
+// Testes campo obrigatório
 describe("Função para verificar se o campo é obrigatório", () => {
   it("Campo preenchido", () => {
     const campo = "Ranielli";
