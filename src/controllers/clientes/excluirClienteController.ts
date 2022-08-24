@@ -9,7 +9,7 @@ export class ExcluirClienteController {
     const clientesRepository = new ClientesRepository();
 
     // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    isInteger({ value: Number(id), nome: "código" });
 
     // Exclui o cliente no banco de dados
     await clientesRepository.deletarCliente({ id: Number(id) });

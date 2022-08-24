@@ -11,7 +11,7 @@ export class BuscarClienteController {
     const clientesRepository = new ClientesRepository();
 
     // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    isInteger({ value: Number(id), nome: "código" });
 
     // Busca o cliente no banco de dados
     const cliente = await clientesRepository.buscarCliente({

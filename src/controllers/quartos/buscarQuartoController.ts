@@ -10,7 +10,7 @@ export class BuscarQuartoController {
     const token = useTokenDecoded(request);
 
     // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    isInteger({ value: Number(id), nome: "código" });
 
     const quartoRepository = new QuartosRepository();
 

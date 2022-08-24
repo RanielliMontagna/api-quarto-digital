@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import axios from "axios";
 
-import { isCnpj } from "../../utils/validations/isCpfCnpj";
+import { isCnpj } from "../../utils/validations/isCnpj";
 import { ValidationError } from "../../utils/errors/validationError";
 
 export class CnpjController {

@@ -10,7 +10,7 @@ export class ExcluirQuartoController {
     const quartosRepository = new QuartosRepository();
 
     // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    isInteger({ value: Number(id), nome: "código" });
 
     // Exclui o quarto no banco de dados
     await quartosRepository.deletarQuarto({ id: Number(id) });

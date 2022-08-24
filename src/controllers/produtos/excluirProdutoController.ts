@@ -9,7 +9,7 @@ export class ExcluirProdutoController {
     const produtosRepository = new ProdutosRepository();
 
     // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    isInteger({ value: Number(id), nome: "código" });
 
     await produtosRepository.deletarProduto({
       id: Number(id),

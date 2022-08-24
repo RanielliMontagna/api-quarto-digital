@@ -12,7 +12,7 @@ export class BuscarProdutoController {
     const produtosRepository = new ProdutosRepository();
 
     // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    isInteger({ value: Number(id), nome: "código" });
 
     // Busca o produto no banco de dados
     const produto = await produtosRepository.buscarProduto({

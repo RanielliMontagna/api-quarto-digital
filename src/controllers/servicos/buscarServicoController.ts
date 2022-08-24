@@ -12,7 +12,7 @@ export class BuscarServicoController {
     const servicosRepository = new ServicosRepository();
 
     // Verifica se o id é um número inteiro
-    isInteger({ value: id, nome: "código" });
+    isInteger({ value: Number(id), nome: "código" });
 
     // Busca o serviço no banco de dados
     const servico = await servicosRepository.buscarServico({
