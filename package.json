@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Ranielli Montagna",
   "license": "MIT",
+  "engines": {
+    "node": ">= 14.0.0"
+  },
   "scripts": {
     "dev": "ts-node-dev --exit-child --respawn --transpile-only --ignore-watch node_modules src/server.ts",
     "build": "prisma generate",
@@ -40,4 +43,5 @@
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.4"
   }
+  
 }
