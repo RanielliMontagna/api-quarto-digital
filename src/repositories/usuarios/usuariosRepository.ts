@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import { prismaClient } from "../../database/prismaClient";
 import { ValidationError } from "../../utils/errors/validationError";
 
@@ -126,5 +128,27 @@ export class UsuariosRepository {
       });
 
     return usuarioExistente;
+  }
+
+  // Atualiza senha do usuário
+  async atualizarSenha({ senha, id }: { senha: string; id: number }) {
+    const senhaCriptografada = await bcrypt.hash(senha, 10);
+
+    const usuario = await prismaClient.usuario
+      .update({
+        data: {
+          senha: senhaCriptografada,
+          alteradoEm: new Date(),
+        },
+        where: {
+          id,
+        },
+      })
+      .catch(() => {
+        //Retorna erro caso a senha não seja atualizada
+        throw new Error("Ocorreu um erro ao atualizar a senha.");
+      });
+
+    return usuario;
   }
 }
