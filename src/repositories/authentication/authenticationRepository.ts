@@ -46,7 +46,7 @@ export class AuthenticationRepository {
         ? "https://app.quarto.digital"
         : "http://localhost:3000";
 
-    const link = `${api}/reset-password?token=${token}`;
+    const link = `${api}/redefinir-senha?token=${token}`;
 
     const mailOptions = {
       from: `Contato Quarto Digital <${process.env.EMAIL}>`,
