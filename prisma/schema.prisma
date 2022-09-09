@@ -105,46 +105,48 @@ model Quarto {
 }
 
 model ProdutosHospedagem {
-  id           Int      @id @default(autoincrement())
-  hospedagemId Int?
-  produtoId    Int?
-  quantidade   Int
-  criadoEm     DateTime @default(now())
-  alteradoEm   DateTime @default(now())
+  id           Int @id @default(autoincrement())
+  hospedagemId Int
+  produtoId    Int
 
-  Hospedagem Hospedagem? @relation(fields: [hospedagemId], references: [id])
-  Produto    Produto?    @relation(fields: [produtoId], references: [id])
+  quantidade Int
+  criadoEm   DateTime @default(now())
+  alteradoEm DateTime @default(now())
+
+  Hospedagem Hospedagem @relation(fields: [hospedagemId], references: [id])
+  Produto    Produto    @relation(fields: [produtoId], references: [id])
 
   @@map("produtos_hospedagem")
 }
 
 model ServicosHospedagem {
-  id           Int      @id @default(autoincrement())
-  hospedagemId Int?
-  servicoId    Int?
-  quantidade   Int
-  criadoEm     DateTime @default(now())
-  alteradoEm   DateTime @default(now())
+  id           Int @id @default(autoincrement())
+  hospedagemId Int
+  servicoId    Int
 
-  Hospedagem Hospedagem? @relation(fields: [hospedagemId], references: [id])
-  Servico    Servico?    @relation(fields: [servicoId], references: [id])
+  quantidade Int
+  criadoEm   DateTime @default(now())
+  alteradoEm DateTime @default(now())
+
+  Hospedagem Hospedagem @relation(fields: [hospedagemId], references: [id])
+  Servico    Servico    @relation(fields: [servicoId], references: [id])
 
   @@map("servicos_hospedagem")
 }
 
 model Hospedagem {
   id          Int       @id @default(autoincrement())
-  clienteId   Int?
-  quartoId    Int?
-  usuarioId   Int?
+  clienteId   Int
+  quartoId    Int
+  usuarioId   Int
   dataEntrada DateTime
   dataSaida   DateTime?
   criadoEm    DateTime  @default(now())
   alteradoEm  DateTime  @default(now())
 
-  Usuario Usuario? @relation(fields: [usuarioId], references: [id])
-  Cliente Cliente? @relation(fields: [clienteId], references: [id])
-  Quarto  Quarto?  @relation(fields: [quartoId], references: [id])
+  Usuario Usuario @relation(fields: [usuarioId], references: [id])
+  Cliente Cliente @relation(fields: [clienteId], references: [id])
+  Quarto  Quarto  @relation(fields: [quartoId], references: [id])
 
   ProdutosHospedagem ProdutosHospedagem[]
   ServicosHospedagem ServicosHospedagem[]
