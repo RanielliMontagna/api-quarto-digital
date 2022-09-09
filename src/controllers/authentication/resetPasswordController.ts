@@ -56,16 +56,12 @@ export class ResetPasswordController {
           await authenticationRepository.enviarEmail({
             email: usuario.email,
             token,
+            response,
           });
         }
       } catch (error) {
         throw new Error("Erro ao criar token de autenticação.");
       }
-
-      return response.status(200).json({
-        message:
-          "Um email foi enviado para você com um link para resetar a senha.",
-      });
     }
   }
 }

@@ -1,4 +1,6 @@
+import { Response } from "express";
 import nodemailer from "nodemailer";
+
 import { prismaClient } from "../../database/prismaClient";
 import { ValidationError } from "../../utils/errors/validationError";
 import { resetPassowordEmailTemplate } from "./authenticationRepository.static";
@@ -31,7 +33,15 @@ export class AuthenticationRepository {
     return tokenExiste;
   }
 
-  async enviarEmail({ email, token }: { email: string; token: string }) {
+  async enviarEmail({
+    email,
+    token,
+    response,
+  }: {
+    email: string;
+    token: string;
+    response: Response;
+  }) {
     //create a func to send email using nodeMailer
     const transporter = nodemailer.createTransport({
       service: "outlook",
@@ -58,6 +68,11 @@ export class AuthenticationRepository {
     transporter.sendMail(mailOptions, function (error) {
       if (error) {
         throw new ValidationError("Erro ao enviar email");
+      } else {
+        return response.status(200).json({
+          message:
+            "Um email foi enviado para você com um link para resetar a senha.",
+        });
       }
     });
   }
