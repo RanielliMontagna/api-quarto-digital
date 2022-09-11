@@ -43,7 +43,7 @@ const ServicosTest = () => {
         .post("/servicos")
         .set("Authorization", "Bearer " + process.env.TOKEN_TEST)
         .send({
-          nome: "Produto de teste",
+          nome: "Serviço de teste",
           preco: 10.5,
         });
 
@@ -51,6 +51,15 @@ const ServicosTest = () => {
       expect(response.body).toHaveProperty("id");
       expect(response.body).toHaveProperty("nome");
       expect(response.body).toHaveProperty("preco");
+
+      const response2 = await request(app)
+        .get(`/servicos/${response.body.id}`)
+        .set("Authorization", "Bearer " + process.env.TOKEN_TEST);
+
+      expect(response2.status).toBe(200);
+      expect(response2.body).toHaveProperty("id");
+      expect(response2.body).toHaveProperty("nome");
+      expect(response2.body).toHaveProperty("preco");
     });
   });
 
@@ -86,19 +95,25 @@ const ServicosTest = () => {
 
   describe("Atualizar um serviço", () => {
     it("Deve atualizar um serviço", async () => {
+      const id = 2;
+
       const response = await request(app)
         .put("/servicos")
         .set("Authorization", "Bearer " + process.env.TOKEN_TEST)
-        .send({
-          id: 2,
-          nome: "Produto de teste",
-          preco: 10.5,
-        });
+        .send({ id, nome: "Serviço de teste", preco: 10.5 });
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty("id");
       expect(response.body).toHaveProperty("nome");
       expect(response.body).toHaveProperty("preco");
+
+      const response2 = await request(app)
+        .get(`/servicos/${id}`)
+        .set("Authorization", "Bearer " + process.env.TOKEN_TEST);
+
+      expect(response2.status).toBe(200);
+      expect(response2.body).toHaveProperty("id");
+      expect(response2.body).toHaveProperty("nome");
     });
   });
 
@@ -109,7 +124,7 @@ const ServicosTest = () => {
         .set("Authorization", "Bearer " + process.env.TOKEN_TEST)
         .send({
           id: 2,
-          nome: "Produto de teste",
+          nome: "Serviço de teste",
         });
 
       expect(response.status).toBe(500);
@@ -140,7 +155,7 @@ const ServicosTest = () => {
         .put("/servicos")
         .set("Authorization", "Bearer " + process.env.TOKEN_TEST)
         .send({
-          nome: "Produto de teste",
+          nome: "Serviço de teste",
           preco: 10.5,
         });
 

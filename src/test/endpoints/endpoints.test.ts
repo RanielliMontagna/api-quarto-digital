@@ -3,8 +3,6 @@ import { ServicosTest } from "./servicos";
 
 require("dotenv").config();
 
-//TODO: implementar testes nos endpoints
-
 //Executa os testes de serviços
 ServicosTest();
 
