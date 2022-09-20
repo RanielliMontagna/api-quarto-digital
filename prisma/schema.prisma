@@ -105,9 +105,11 @@ model Quarto {
 }
 
 model ProdutosHospedagem {
-  id           Int @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   hospedagemId Int
   produtoId    Int
+  produtoNome  String
+  produtoPreco Float
 
   quantidade Int
   criadoEm   DateTime @default(now())
@@ -120,9 +122,11 @@ model ProdutosHospedagem {
 }
 
 model ServicosHospedagem {
-  id           Int @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   hospedagemId Int
   servicoId    Int
+  servicoNome  String
+  servicoPreco Float
 
   quantidade Int
   criadoEm   DateTime @default(now())
