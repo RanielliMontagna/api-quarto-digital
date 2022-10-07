@@ -33,3 +33,13 @@ export interface IAdicionarServicoHospedagem {
   };
   quantidade: number;
 }
+
+export interface IAlterarStatusHospedagem {
+  codigoHospedagem: number;
+  /**
+   * 0 - Em aberto
+   * 1 - Pago
+   * 2 - Cancelado
+   */
+  status: 0 | 1 | 2;
+}

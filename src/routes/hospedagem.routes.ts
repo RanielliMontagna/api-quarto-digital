@@ -4,6 +4,7 @@ import { BuscarHospedagemController } from "../controllers/hospedagem/buscarHosp
 import { CriarHospedagemController } from "../controllers/hospedagem/criarHospedagemController";
 import { AdicionarProdutoHospedagemController } from "../controllers/hospedagem/adicionarProdutoHospedagemController";
 import { AdicionarServicoHospedagemController } from "../controllers/hospedagem/adicionarServicoHospedagemController";
+import { AlterarStatusHospedagemController } from "../controllers/hospedagem/alterarStatusHospedagemController";
 
 const hospedagemRouter = Router();
 
@@ -11,6 +12,7 @@ const criarHospedagem = new CriarHospedagemController();
 const buscarHospedagem = new BuscarHospedagemController();
 const adicionarProdutoHospedagem = new AdicionarProdutoHospedagemController();
 const adicionarServicoHospedagem = new AdicionarServicoHospedagemController();
+const alterarStatusHospedagem = new AlterarStatusHospedagemController();
 
 /**
  * @openapi
@@ -65,5 +67,18 @@ hospedagemRouter.post("/produto", adicionarProdutoHospedagem.handle);
  *
  */
 hospedagemRouter.post("/servico", adicionarServicoHospedagem.handle);
+
+/**
+ * @openapi
+ * /hospedagem/status:
+ *  put:
+ *   tags: [Hospedagem]
+ *   description: Altera o status de uma hospedagem
+ *   summary: Altera o status de uma hospedagem
+ *    responses:
+ *     200:
+ *      description: Status alterado com sucesso
+ */
+hospedagemRouter.put("/status", alterarStatusHospedagem.handle);
 
 export { hospedagemRouter };

@@ -4,6 +4,7 @@ import type {
   ICriarHospedagem,
   IBuscarHospedagem,
   IAdicionarServicoHospedagem,
+  IAlterarStatusHospedagem,
 } from "./hospedagemRepository.types";
 
 export class HospedagemRepository {
@@ -79,5 +80,21 @@ export class HospedagemRepository {
     });
 
     return servicoHospedagem;
+  }
+
+  async alterarStatusHospedagem({
+    codigoHospedagem,
+    status,
+  }: IAlterarStatusHospedagem) {
+    const hospedagem = await prismaClient.hospedagem.update({
+      where: {
+        id: codigoHospedagem,
+      },
+      data: {
+        status,
+      },
+    });
+
+    return hospedagem;
   }
 }

@@ -146,6 +146,7 @@ model Hospedagem {
   dataEntrada DateTime
   dataSaida   DateTime?
   observacao  String?
+  status      Int?      @default(0)
   criadoEm    DateTime  @default(now())
   alteradoEm  DateTime  @default(now())
 
