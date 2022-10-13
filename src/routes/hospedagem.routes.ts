@@ -71,10 +71,10 @@ hospedagemRouter.post("/servico", adicionarServicoHospedagem.handle);
 /**
  * @openapi
  * /hospedagem/status:
- *  put:
- *   tags: [Hospedagem]
- *   description: Altera o status de uma hospedagem
- *   summary: Altera o status de uma hospedagem
+ *   put:
+ *    tags: [Hospedagem]
+ *    description: Altera o status de uma hospedagem
+ *    summary: Altera o status de uma hospedagem
  *    responses:
  *     200:
  *      description: Status alterado com sucesso
