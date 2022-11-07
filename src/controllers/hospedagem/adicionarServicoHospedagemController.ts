@@ -43,7 +43,10 @@ export class AdicionarServicoHospedagemController {
     });
 
     // Buscar informações do serviço
-    const servico = await servicosRepository.buscarServico(codigoServico);
+    const servico = await servicosRepository.buscarServico({
+      id: codigoServico,
+      usuarioId: token.id,
+    });
 
     if (!servico) {
       throw new Error("Servico não encontrado");

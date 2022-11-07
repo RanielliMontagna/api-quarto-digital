@@ -43,7 +43,10 @@ export class AdicionarProdutoHospedagemController {
     });
 
     // Buscar informações do produto
-    const produto = await produtosRepository.buscarProduto(codigoProduto);
+    const produto = await produtosRepository.buscarProduto({
+      id: codigoProduto,
+      usuarioId: token.id,
+    });
 
     if (!produto) {
       throw new Error("Produto não encontrado");

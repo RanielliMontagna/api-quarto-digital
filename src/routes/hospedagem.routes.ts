@@ -5,6 +5,7 @@ import { CriarHospedagemController } from "../controllers/hospedagem/criarHosped
 import { AdicionarProdutoHospedagemController } from "../controllers/hospedagem/adicionarProdutoHospedagemController";
 import { AdicionarServicoHospedagemController } from "../controllers/hospedagem/adicionarServicoHospedagemController";
 import { AlterarStatusHospedagemController } from "../controllers/hospedagem/alterarStatusHospedagemController";
+import { CheckoutHospedagemController } from "../controllers/hospedagem/checkoutHospedagemController";
 
 const hospedagemRouter = Router();
 
@@ -13,6 +14,7 @@ const buscarHospedagem = new BuscarHospedagemController();
 const adicionarProdutoHospedagem = new AdicionarProdutoHospedagemController();
 const adicionarServicoHospedagem = new AdicionarServicoHospedagemController();
 const alterarStatusHospedagem = new AlterarStatusHospedagemController();
+const checkoutHospedagem = new CheckoutHospedagemController();
 
 /**
  * @openapi
@@ -23,7 +25,7 @@ const alterarStatusHospedagem = new AlterarStatusHospedagemController();
  *     summary: Insere uma hospedagem
  *     responses:
  *       200:
- *         description: Hospedagem criada com sucesso
+ *         description: Hospedagem criada com sucesso!
  */
 hospedagemRouter.post("/", criarHospedagem.handle);
 
@@ -49,7 +51,7 @@ hospedagemRouter.get("/:id", buscarHospedagem.handle);
  *    summary: Adiciona um produto a uma hospedagem
  *    responses:
  *     200:
- *      description: Produto adicionado com sucesso
+ *      description: Produto adicionado com sucesso!
  *
  */
 hospedagemRouter.post("/produto", adicionarProdutoHospedagem.handle);
@@ -63,7 +65,7 @@ hospedagemRouter.post("/produto", adicionarProdutoHospedagem.handle);
  *    summary: Adiciona um serviço a uma hospedagem
  *    responses:
  *     200:
- *      description: Serviço adicionado com sucesso
+ *      description: Serviço adicionado com sucesso!
  *
  */
 hospedagemRouter.post("/servico", adicionarServicoHospedagem.handle);
@@ -77,8 +79,21 @@ hospedagemRouter.post("/servico", adicionarServicoHospedagem.handle);
  *    summary: Altera o status de uma hospedagem
  *    responses:
  *     200:
- *      description: Status alterado com sucesso
+ *      description: Status alterado com sucesso!
  */
 hospedagemRouter.put("/status", alterarStatusHospedagem.handle);
+
+/**
+ * @openapi
+ * /hospedagem/checkout:
+ *  post:
+ *   tags: [Hospedagem]
+ *   description: Realiza o checkout de uma hospedagem
+ *   summary: Realiza o checkout de uma hospedagem
+ *   responses:
+ *    200:
+ *      description: Checkout realizado com sucesso!
+ */
+hospedagemRouter.post("/checkout", checkoutHospedagem.handle);
 
 export { hospedagemRouter };

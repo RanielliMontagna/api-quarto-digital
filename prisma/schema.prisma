@@ -24,6 +24,7 @@ model Usuario {
   Cliente    Cliente[]
   Quarto     Quarto[]
   Hospedagem Hospedagem[]
+  Financeiro Financeiro[]
 
   @@map("usuarios")
 }
@@ -156,6 +157,23 @@ model Hospedagem {
 
   ProdutosHospedagem ProdutosHospedagem[]
   ServicosHospedagem ServicosHospedagem[]
+  Financeiro         Financeiro[]
 
   @@map("hospedagens")
+}
+
+model Financeiro {
+  id        Int      @id @default(autoincrement())
+  descricao String?
+  valor     Float
+  tipo      Int      @default(0) // 0 = receita, 1 = despesa
+  criadoEm  DateTime @default(now())
+
+  Hospedagem   Hospedagem? @relation(fields: [hospedagemId], references: [id])
+  hospedagemId Int?
+
+  Usuario   Usuario? @relation(fields: [usuarioId], references: [id])
+  usuarioId Int?
+
+  @@map("financeiro")
 }

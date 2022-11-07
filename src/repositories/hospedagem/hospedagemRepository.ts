@@ -41,6 +41,48 @@ export class HospedagemRepository {
         id: codigoHospedagem,
         usuarioId: codigoUsuario,
       },
+      select: {
+        id: true,
+        dataEntrada: true,
+        dataSaida: true,
+        observacao: true,
+        status: true,
+        Cliente: {
+          select: {
+            id: true,
+            nome: true,
+            telefone: true,
+          },
+        },
+        ProdutosHospedagem: {
+          select: {
+            id: true,
+            produtoNome: true,
+            produtoPreco: true,
+            quantidade: true,
+          },
+        },
+        ServicosHospedagem: {
+          select: {
+            id: true,
+            servicoNome: true,
+            servicoPreco: true,
+            quantidade: true,
+          },
+        },
+        Quarto: {
+          select: {
+            diaria: true,
+          },
+        },
+        alteradoEm: true,
+        criadoEm: true,
+        Usuario: {
+          select: {
+            nome: true,
+          },
+        },
+      },
     });
 
     return hospedagem;
@@ -94,6 +136,17 @@ export class HospedagemRepository {
         status,
       },
     });
+
+    if (status === 1) {
+      await prismaClient.quarto.update({
+        where: {
+          id: hospedagem.quartoId,
+        },
+        data: {
+          status: 0,
+        },
+      });
+    }
 
     return hospedagem;
   }

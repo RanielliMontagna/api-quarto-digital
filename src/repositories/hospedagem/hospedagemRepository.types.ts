@@ -38,7 +38,7 @@ export interface IAlterarStatusHospedagem {
   codigoHospedagem: number;
   /**
    * 0 - Em aberto
-   * 1 - Pago
+   * 1 - Finalizada
    * 2 - Cancelado
    */
   status: 0 | 1 | 2;
