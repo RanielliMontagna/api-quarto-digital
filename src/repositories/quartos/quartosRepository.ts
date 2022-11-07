@@ -42,15 +42,37 @@ export class QuartosRepository {
           identificacao: true,
           diaria: true,
           status: true,
+          Hospedagem: {
+            select: {
+              id: true,
+              Cliente: {
+                select: {
+                  id: true,
+                  nome: true,
+                  telefone: true,
+                },
+              },
+              dataEntrada: true,
+              dataSaida: true,
+              status: true,
+            },
+            where: {
+              status: 0,
+            },
+          },
         },
         orderBy: { identificacao: "asc" },
       })
-      .catch(() => {
+      .catch((err) => {
         //Retornar erro caso os quartos não sejam listados
         throw new Error("Ocorreu um erro ao listar os quartos");
       });
 
-    return quartos;
+    return quartos?.map((quarto) => ({
+      ...quarto,
+      hospedagem: quarto.Hospedagem[0] || null,
+      Hospedagem: undefined,
+    }));
   }
 
   // Criar um quarto
