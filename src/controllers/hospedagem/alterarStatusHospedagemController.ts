@@ -26,11 +26,9 @@ export class AlterarStatusHospedagemController {
     });
 
     // Validações no campo status
-    composeValidator({
-      validators: [campoObrigatorio, isInteger],
-      value: status,
-      nome: "status",
-    });
+    if (status !== 0 && status !== 1) {
+      throw new Error("Status inválido");
+    }
 
     // Buscar informações da hospedagem
     const hospedagem = await hospedagemRepository.buscarHospedagem({
