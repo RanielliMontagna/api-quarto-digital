@@ -41,10 +41,43 @@ export class IndicadoresController {
 
     const taxaOcupacao = +((quartosOcupados / quartosTotais) * 100).toFixed(2);
 
+    // reservas atuais
+    //TODO: fazer logica de reservas
+    const reservas = 15;
+
+    //grafico de receitas do ano mes a mes
+    const receitasAnuais = await prismaClient.financeiro.findMany({
+      where: {
+        usuarioId: token.id,
+        criadoEm: {
+          gte: new Date(new Date().getFullYear(), 0, 1),
+          lte: new Date(new Date().getFullYear(), 11, 31),
+        },
+      },
+    });
+
+    const receitasAnuaisMes = receitasAnuais.reduce((acc: any, receita) => {
+      const mes = receita.criadoEm.getMonth();
+      const valor = receita.valor;
+
+      if (acc[mes]) {
+        acc[mes].valor += valor;
+      } else {
+        acc[mes] = {
+          mes,
+          valor,
+        };
+      }
+
+      return acc;
+    }, {});
+
     return response.status(200).json({
       taxaOcupacao,
       hospedes,
       receitasMensais: somaReceitasMensais,
+      reservas,
+      receitasAnuais: Object.values(receitasAnuaisMes),
     });
   }
 }
