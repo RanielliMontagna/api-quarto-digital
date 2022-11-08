@@ -6,15 +6,31 @@ import { AdicionarProdutoHospedagemController } from "../controllers/hospedagem/
 import { AdicionarServicoHospedagemController } from "../controllers/hospedagem/adicionarServicoHospedagemController";
 import { AlterarStatusHospedagemController } from "../controllers/hospedagem/alterarStatusHospedagemController";
 import { CheckoutHospedagemController } from "../controllers/hospedagem/checkoutHospedagemController";
+import { ListarHospedagensController } from "../controllers/hospedagem/listarHospedagensController";
 
 const hospedagemRouter = Router();
 
+const listarHospedagem = new ListarHospedagensController();
 const criarHospedagem = new CriarHospedagemController();
 const buscarHospedagem = new BuscarHospedagemController();
 const adicionarProdutoHospedagem = new AdicionarProdutoHospedagemController();
 const adicionarServicoHospedagem = new AdicionarServicoHospedagemController();
 const alterarStatusHospedagem = new AlterarStatusHospedagemController();
 const checkoutHospedagem = new CheckoutHospedagemController();
+
+/**
+ * @openapi
+ * /hospedagem:
+ *  get:
+ *   tags: [Hospedagem]
+ *   description: Lista todas as hospedagens do usuário
+ *   summary: Lista todas as hospedagens do usuário
+ *   responses:
+ *    200:
+ *     description: Lista de hospedagens
+ *
+ */
+hospedagemRouter.get("/", listarHospedagem.handle);
 
 /**
  * @openapi

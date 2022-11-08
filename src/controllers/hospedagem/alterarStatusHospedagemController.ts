@@ -26,7 +26,7 @@ export class AlterarStatusHospedagemController {
     });
 
     // Validações no campo status
-    if (status !== 0 && status !== 1) {
+    if (status !== 0 && status !== 1 && status !== 2) {
       throw new Error("Status inválido");
     }
 

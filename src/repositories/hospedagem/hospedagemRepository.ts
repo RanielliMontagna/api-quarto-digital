@@ -31,6 +31,40 @@ export class HospedagemRepository {
     return hospedagem;
   }
 
+  async listarHospedagens() {
+    const hospedagens = await prismaClient.hospedagem.findMany({
+      select: {
+        id: true,
+        dataEntrada: true,
+        dataSaida: true,
+        observacao: true,
+        status: true,
+        Cliente: {
+          select: {
+            id: true,
+            nome: true,
+            telefone: true,
+          },
+        },
+        Quarto: {
+          select: {
+            id: true,
+            diaria: true,
+          },
+        },
+        alteradoEm: true,
+        criadoEm: true,
+        Usuario: {
+          select: {
+            nome: true,
+          },
+        },
+      },
+    });
+
+    return hospedagens;
+  }
+
   // Buscar uma hospedagem
   async buscarHospedagem({
     codigoHospedagem,
@@ -137,7 +171,7 @@ export class HospedagemRepository {
       },
     });
 
-    if (status === 1) {
+    if (status != 0) {
       await prismaClient.quarto.update({
         where: {
           id: hospedagem.quartoId,

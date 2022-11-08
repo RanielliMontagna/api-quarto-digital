@@ -12,9 +12,11 @@ import { cnpjRouter } from "./external.routes";
 import { authenticationRouter } from "./authentication.routes";
 import { JwtMiddleware } from "../middlewares/jwt";
 import { CheckHealthController } from "../controllers/health/checkHealthController";
+import { IndicadoresController } from "../controllers/indicadores/indicadoreSController";
 
 const routes = Router();
 const checkHealth = new CheckHealthController();
+const indicadores = new IndicadoresController();
 
 // Liberar origens das requisições
 routes.use(cors({ origin: "*" }));
@@ -31,6 +33,19 @@ routes.use(cors({ origin: "*" }));
  *         description: Retorna o status do servidor.
  */
 routes.get("/", checkHealth.handle);
+
+/**
+ * @openapi
+ * /indicadores:
+ *  get:
+ *   tags: [Indicadores]
+ *   description: Retorna os indicadores do sistema.
+ *   summary: Retorna os indicadores do sistema.
+ *   responses:
+ *    200:
+ *     description: Retorna os indicadores do sistema.
+ */
+routes.get("/indicadores", indicadores.handle);
 
 // Endpoints de autenticação
 routes.use("/", authenticationRouter);
