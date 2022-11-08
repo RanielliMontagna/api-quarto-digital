@@ -5,6 +5,7 @@ import type {
   IBuscarHospedagem,
   IAdicionarServicoHospedagem,
   IAlterarStatusHospedagem,
+  IBuscarHospedagens,
 } from "./hospedagemRepository.types";
 
 export class HospedagemRepository {
@@ -31,8 +32,12 @@ export class HospedagemRepository {
     return hospedagem;
   }
 
-  async listarHospedagens() {
+  async listarHospedagens({ usuarioId, params }: IBuscarHospedagens) {
     const hospedagens = await prismaClient.hospedagem.findMany({
+      where: {
+        usuarioId,
+        ...params,
+      },
       select: {
         id: true,
         dataEntrada: true,
@@ -49,7 +54,13 @@ export class HospedagemRepository {
         Quarto: {
           select: {
             id: true,
+            identificacao: true,
             diaria: true,
+          },
+        },
+        Financeiro: {
+          select: {
+            valor: true,
           },
         },
         alteradoEm: true,

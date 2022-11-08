@@ -7,6 +7,11 @@ export interface ICriarHospedagem {
   usuarioId: number;
 }
 
+export interface IBuscarHospedagens {
+  params: Record<string, string>;
+  usuarioId: number;
+}
+
 export interface IBuscarHospedagem {
   codigoHospedagem: number;
   codigoUsuario: number;
