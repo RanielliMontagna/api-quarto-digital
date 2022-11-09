@@ -97,6 +97,8 @@ export class HospedagemRepository {
             id: true,
             nome: true,
             telefone: true,
+            cpfCnpj: true,
+            email: true,
           },
         },
         ProdutosHospedagem: {
@@ -117,6 +119,7 @@ export class HospedagemRepository {
         },
         Quarto: {
           select: {
+            identificacao: true,
             diaria: true,
           },
         },
