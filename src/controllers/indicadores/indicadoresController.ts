@@ -10,7 +10,17 @@ export class IndicadoresController {
     const quartosTotais = await prismaClient.quarto.count();
     const quartosOcupados = await prismaClient.quarto.count({
       where: {
-        status: 1,
+        Hospedagem: {
+          some: {
+            dataEntrada: {
+              lte: new Date(),
+            },
+            dataSaida: {
+              gte: new Date(),
+            },
+            status: 0,
+          },
+        },
         usuarioId: token.id,
       },
     });
@@ -20,6 +30,12 @@ export class IndicadoresController {
       where: {
         status: 0,
         usuarioId: token.id,
+        dataEntrada: {
+          lte: new Date(),
+        },
+        dataSaida: {
+          gte: new Date(),
+        },
       },
     });
 
@@ -42,8 +58,15 @@ export class IndicadoresController {
     const taxaOcupacao = +((quartosOcupados / quartosTotais) * 100).toFixed(2);
 
     // reservas atuais
-    //TODO: fazer logica de reservas
-    const reservas = 15;
+    const reservas = await prismaClient.hospedagem.count({
+      where: {
+        usuarioId: token.id,
+        status: 0,
+        dataEntrada: {
+          gte: new Date(),
+        },
+      },
+    });
 
     //grafico de receitas do ano mes a mes
     const receitasAnuais = await prismaClient.financeiro.findMany({

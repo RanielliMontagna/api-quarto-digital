@@ -94,12 +94,6 @@ export class CriarHospedagemController {
       usuarioId: Number(id),
     });
 
-    // Altera o status do quarto para ocupado
-    await quartosRepository.alterarStatusQuarto({
-      id: Number(codigoQuarto),
-      status: 1,
-    });
-
     return response.status(201).json(hospedagem);
   }
 }

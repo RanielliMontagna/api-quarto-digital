@@ -11,13 +11,7 @@ export interface IBuscarQuartos {
 export interface ICriarQuarto {
   identificacao: number;
   diaria: number;
-  status: number;
   usuarioId: number;
-}
-
-export interface IAlterarStatusQuarto {
-  id: number;
-  status: number;
 }
 
 export interface IEditarQuarto extends Omit<ICriarQuarto, "usuarioId"> {

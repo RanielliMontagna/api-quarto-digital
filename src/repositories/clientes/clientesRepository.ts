@@ -70,7 +70,7 @@ export class ClientesRepository {
     const cliente = await prismaClient.cliente
       .create({
         data: {
-          email: props.email,
+          email: props.email || null,
           cpfCnpj: props.cpfCnpj,
           nome: props.nome,
           telefone: props.telefone,
@@ -86,7 +86,9 @@ export class ClientesRepository {
           dataNasc: true,
         },
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
+
         //Retorna erro caso o cliente não seja criado
         throw new Error("Ocorreu um erro ao criar o cliente.");
       });

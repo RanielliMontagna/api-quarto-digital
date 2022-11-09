@@ -93,7 +93,6 @@ model Quarto {
   identificacao Int
   tipo          String?
   diaria        Float
-  status        Int      @default(0)
   criadoEm      DateTime @default(now())
   alteradoEm    DateTime @default(now())
 

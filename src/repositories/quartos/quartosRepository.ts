@@ -2,7 +2,6 @@ import { prismaClient } from "../../database/prismaClient";
 import { ValidationError } from "../../utils/errors/validationError";
 
 import type {
-  IAlterarStatusQuarto,
   IBuscarQuarto,
   IBuscarQuartos,
   ICriarQuarto,
@@ -21,7 +20,6 @@ export class QuartosRepository {
           id: true,
           identificacao: true,
           diaria: true,
-          status: true,
         },
       })
       .catch(() => {
@@ -41,7 +39,6 @@ export class QuartosRepository {
           id: true,
           identificacao: true,
           diaria: true,
-          status: true,
           Hospedagem: {
             select: {
               id: true,
@@ -57,7 +54,9 @@ export class QuartosRepository {
               status: true,
             },
             where: {
-              status: 0,
+              status: {
+                equals: 0,
+              },
             },
           },
         },
@@ -71,25 +70,20 @@ export class QuartosRepository {
     return quartos?.map((quarto) => ({
       ...quarto,
       hospedagem: quarto.Hospedagem[0] || null,
+      hospedagens: quarto.Hospedagem,
       Hospedagem: undefined,
     }));
   }
 
   // Criar um quarto
-  async criarQuarto({
-    identificacao,
-    diaria,
-    status = 0,
-    usuarioId,
-  }: ICriarQuarto) {
+  async criarQuarto({ identificacao, diaria, usuarioId }: ICriarQuarto) {
     const quarto = await prismaClient.quarto
       .create({
-        data: { identificacao, diaria, status, usuarioId },
+        data: { identificacao, diaria, usuarioId },
         select: {
           id: true,
           identificacao: true,
           diaria: true,
-          status: true,
         },
       })
       .catch(() => {
@@ -101,20 +95,18 @@ export class QuartosRepository {
   }
 
   // Editar um quarto
-  async editarQuarto({ id, identificacao, diaria, status = 0 }: IEditarQuarto) {
+  async editarQuarto({ id, identificacao, diaria }: IEditarQuarto) {
     const quarto = await prismaClient?.quarto
       ?.update({
         data: {
           identificacao,
           diaria,
-          status,
           alteradoEm: new Date(),
         },
         select: {
           id: true,
           identificacao: true,
           diaria: true,
-          status: true,
         },
         where: { id },
       })
@@ -146,34 +138,6 @@ export class QuartosRepository {
           throw new Error("Ocorreu um erro ao excluir o quarto.");
         }
       });
-  }
-
-  //Alterar o status do quarto
-  async alterarStatusQuarto({ id, status }: IAlterarStatusQuarto) {
-    const quarto = await prismaClient.quarto
-      .update({
-        data: {
-          status,
-        },
-        where: {
-          id: Number(id),
-        },
-        select: {
-          id: true,
-          identificacao: true,
-          diaria: true,
-          status: true,
-        },
-      })
-      .catch((error) => {
-        if (error?.meta.cause === "Record to update not found.") {
-          throw new ValidationError("Quarto não encontrado.");
-        } else {
-          throw new Error("Erro ao atualizar o status do quarto.");
-        }
-      });
-
-    return quarto;
   }
 
   // Verificar se a identificação do quarto já existe

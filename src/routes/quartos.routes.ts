@@ -5,7 +5,6 @@ import { CriarQuartoController } from "../controllers/quartos/criarQuartoControl
 import { EditarQuartoController } from "../controllers/quartos/editarQuartoController";
 import { ExcluirQuartoController } from "../controllers/quartos/excluirQuartoController";
 import { ListarQuartosController } from "../controllers/quartos/listarQuartosController";
-import { AlterarStatusQuartoController } from "../controllers/quartos/alterarStatusQuartoController";
 
 const quartosRouter = Router();
 
@@ -14,7 +13,6 @@ const buscarQuarto = new BuscarQuartoController();
 const listarQuarto = new ListarQuartosController();
 const excluirQuarto = new ExcluirQuartoController();
 const editarQuarto = new EditarQuartoController();
-const alterarStatusQuarto = new AlterarStatusQuartoController();
 
 /**
  * @openapi
@@ -110,19 +108,5 @@ quartosRouter.delete("/:id", excluirQuarto.handle);
  *         description: Retorna o quarto editado.
  */
 quartosRouter.put("/", editarQuarto.handle);
-
-/**
- * @openapi
- * /quartos/alterar-status/{id}:
- * put:
- *  tags: [Quartos]
- *  description: Altera o status do quarto.
- *  summary: Altera o status do quarto.
- *  responses:
- *      200:
- *          description: Retorna o quarto editado.
- *
- */
-quartosRouter.put("/alterar-status/:id", alterarStatusQuarto.handle);
 
 export { quartosRouter };

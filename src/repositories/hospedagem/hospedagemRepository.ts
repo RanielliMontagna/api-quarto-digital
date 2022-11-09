@@ -71,6 +71,9 @@ export class HospedagemRepository {
           },
         },
       },
+      orderBy: {
+        criadoEm: "desc",
+      },
     });
 
     return hospedagens;
@@ -184,17 +187,6 @@ export class HospedagemRepository {
         status,
       },
     });
-
-    if (status != 0) {
-      await prismaClient.quarto.update({
-        where: {
-          id: hospedagem.quartoId,
-        },
-        data: {
-          status: 0,
-        },
-      });
-    }
 
     return hospedagem;
   }
