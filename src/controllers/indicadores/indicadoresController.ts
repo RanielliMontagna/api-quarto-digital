@@ -15,9 +15,6 @@ export class IndicadoresController {
             dataEntrada: {
               lte: new Date(),
             },
-            dataSaida: {
-              gte: new Date(),
-            },
             status: 0,
           },
         },
@@ -32,9 +29,6 @@ export class IndicadoresController {
         usuarioId: token.id,
         dataEntrada: {
           lte: new Date(),
-        },
-        dataSaida: {
-          gte: new Date(),
         },
       },
     });
