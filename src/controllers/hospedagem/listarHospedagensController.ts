@@ -1,3 +1,4 @@
+import { IStatus } from "./../../repositories/hospedagem/hospedagemRepository.types";
 import { Request, Response } from "express";
 
 import { HospedagemRepository } from "../../repositories/hospedagem/hospedagemRepository";
@@ -12,9 +13,48 @@ export class ListarHospedagensController {
     const { query } = request;
 
     let params = {};
+
+    const status = Number(query?.status) as IStatus;
+    if (status) {
+      switch (status) {
+        case 1:
+          params = {
+            ...params,
+            dataEntrada: {
+              lte: new Date(),
+            },
+            status: 0,
+          };
+          break;
+        case 2:
+          params = {
+            ...params,
+            dataEntrada: {
+              gte: new Date(),
+            },
+            status: 0,
+          };
+          break;
+        case 3:
+          params = {
+            ...params,
+            status: 1,
+          };
+          break;
+        case 4:
+          params = {
+            ...params,
+            status: 2,
+          };
+          break;
+        default:
+          break;
+      }
+    }
     // Parâmetros de search da query
     if (query?.search) {
       params = {
+        ...params,
         Cliente: {
           nome: {
             contains: String(query?.search),

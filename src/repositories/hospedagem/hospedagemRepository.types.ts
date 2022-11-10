@@ -7,8 +7,12 @@ export interface ICriarHospedagem {
   usuarioId: number;
 }
 
+export type IStatus = 0 | 1 | 2 | 3 | 4;
 export interface IBuscarHospedagens {
-  params: Record<string, string>;
+  params: {
+    search?: string;
+    status?: IStatus;
+  };
   usuarioId: number;
 }
 
