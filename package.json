@@ -41,8 +41,8 @@
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
     "ts-jest": "^28.0.8",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.9.1",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.6.4"
+    "typescript": "^4.9.3"
   }
 }
