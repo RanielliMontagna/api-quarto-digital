@@ -12,7 +12,7 @@ import { cnpjRouter } from "./external.routes";
 import { authenticationRouter } from "./authentication.routes";
 import { JwtMiddleware } from "../middlewares/jwt";
 import { CheckHealthController } from "../controllers/health/checkHealthController";
-import { IndicadoresController } from "../controllers/indicadores/indicadoreSController";
+import { IndicadoresController } from "../controllers/indicadores/indicadoresController";
 
 const routes = Router();
 const checkHealth = new CheckHealthController();
